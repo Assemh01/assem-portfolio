@@ -62,6 +62,36 @@ export default function Home() {
     <div
       className={`relative min-h-screen ${data.showCursor ? "cursor-none" : ""}`}
     >
+      <Head>
+        <title>Assem Alhomsi | AI Engineer</title>
+
+        <meta
+          name="description"
+          content="Assem Alhomsi is an AI Engineer specializing in production-ready GenAI systems, RAG pipelines, LLM deployment, and scalable backend services."
+        />
+
+        <meta name="keywords" content="Assem Alhomsi, AI Engineer, Generative AI, RAG, LLM, LangChain, LangGraph, Machine Learning, Backend, Python" />
+
+        <meta name="author" content="Assem Alhomsi" />
+
+        {/* Open Graph (LinkedIn / Facebook preview) */}
+        <meta property="og:title" content="Assem Alhomsi | AI Engineer" />
+        <meta
+          property="og:description"
+          content="AI Engineer building production-ready GenAI systems — RAG pipelines, LLM deployment, and scalable backend infrastructure."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://yourdomain.com" />
+
+        {/* Twitter preview */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Assem Alhomsi | AI Engineer" />
+        <meta
+          name="twitter:description"
+          content="Production-ready GenAI systems, RAG architecture, and LLM infrastructure."
+        />
+      </Head>
+
       {/* ===== Custom Cursor (optional, controlled by portfolio.json) ===== */}
       {data.showCursor && <Cursor />}
 

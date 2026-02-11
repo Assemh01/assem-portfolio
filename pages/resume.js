@@ -140,7 +140,7 @@ const Resume = () => {
       <BackToTop />
 
       <Head>
-        <title>{data.name} — Resume</title>
+        <title>Assem&apos;s Resume</title>
       </Head>
 
       {/* Full-page background (light + dark) */}
@@ -177,7 +177,7 @@ const Resume = () => {
             {/* Page title */}
             <div className="mt-10 tablet:mt-14 flex flex-col items-center text-center">
               <h1 className="text-5xl tablet:text-6xl font-semibold text-gray-900 dark:text-white tracking-tight">
-                Resume
+                Assem&apos;s Resume
               </h1>
               <div className="mt-3 flex justify-center">
                 <div
@@ -215,7 +215,7 @@ const Resume = () => {
                       <div>
                         <div className="flex items-center min-h-[3rem] tablet:min-h-[3.5rem]">
                           <h1 className="text-3xl tablet:text-4xl font-bold text-gray-900 dark:text-white">
-                            {data.name}
+                            Assem Alhomsi
                           </h1>
                         </div>
 

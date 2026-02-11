@@ -65,6 +65,7 @@ export default function Home() {
       <Head>
         <title>Assem Alhomsi | AI Engineer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="google-site-verification" content="HGdQzstagAvp2o57jjBvXR1w6dJFiFt-lbtL37b4u7I" />
 
         <meta
           name="description"

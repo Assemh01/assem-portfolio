@@ -65,11 +65,6 @@ export default function Home() {
       {/* ===== Custom Cursor (optional, controlled by portfolio.json) ===== */}
       {data.showCursor && <Cursor />}
 
-      {/* ===== Page <head> metadata ===== */}
-      <Head>
-        <title>{data.name}</title>
-      </Head>
-
       {/* ===== Background Layer (gradient circle + top spacing) ===== */}
       <div className="relative">
         <div className="gradient-circle"></div>

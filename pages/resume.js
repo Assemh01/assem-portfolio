@@ -24,7 +24,7 @@ const ResumeExperience = ({ dates, type, position, bullets, isLast }) => {
 
   return (
     <div className="w-full">
-      <div className="pt-6">
+      <div className="pt-5">
         <div className="flex flex-col tablet:flex-row tablet:items-baseline tablet:justify-between gap-2">
           <h3 className="text-lg tablet:text-xl font-semibold text-gray-900 dark:text-white">
             {position}
@@ -250,10 +250,10 @@ const Resume = () => {
                   </div>
 
                   {/* Divider */}
-                  <div className="mt-8 h-px w-full bg-gray-900/10 dark:bg-white/10" />
+                  <div className="mt-6 h-px w-full bg-gray-900/10 dark:bg-white/10" />
 
                   {/* Experience */}
-                  <div className="mt-10">
+                  <div className="mt-8">
                     <div className="flex items-center gap-4">
                       <span className="flex items-center gap-3 text-xs uppercase tracking-[0.35em] text-gray-900 dark:text-white font-semibold">
                         <span className="inline-block h-1 w-6 bg-gray-900 dark:bg-white" />
@@ -277,7 +277,7 @@ const Resume = () => {
                   </div>
 
                   {/* Education */}
-                  <div className="mt-12">
+                  <div className="mt-8">
                     <div className="flex items-center gap-4">
                       <span className="flex items-center gap-3 text-xs uppercase tracking-[0.35em] text-gray-900 dark:text-white font-semibold">
                         <span className="inline-block h-1 w-6 bg-gray-900 dark:bg-white" />
@@ -303,7 +303,7 @@ const Resume = () => {
                   </div>
 
                   {/* Skills */}
-                  <div className="mt-12">
+                  <div className="mt-8">
                     <div className="flex items-center gap-4">
                       <span className="flex items-center gap-3 text-xs uppercase tracking-[0.35em] text-gray-900 dark:text-white font-semibold">
                         <span className="inline-block h-1 w-6 bg-gray-900 dark:bg-white" />

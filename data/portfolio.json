@@ -1,1 +1,203 @@
-{"name":"Chetan","headerTaglineOne":"Hello 👋","headerTaglineTwo":"I'm Chetan Verma - curious","headerTaglineThree":"designer and devloper","headerTaglineFour":" based in New Delhi, India.","showCursor":true,"showBlog":true,"darkMode":true,"showResume":true,"socials":[{"id":"1","title":"Github","link":"https://github.com/chetanverma16"},{"id":"2","title":"LinkedIn","link":"https://www.linkedin.com/in/chetanverma7/"},{"id":"3","title":"Twitter","link":"https://twitter.com/realchetanverma"},{"id":"4","title":"Blog","link":"https://blog.chetanverma.com/"},{"id":"5","title":"Email","link":"mailto:hello@chetanverma.com"}],"projects":[{"id":"1","title":"Project One Test","description":"Web Design","imageSrc":"https://images.unsplash.com/photo-1487837647815-bbc1f30cd0d2?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8Njl8fHBhc3RlbHxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=400&q=60","url":"http://chetanverma.com/"},{"id":"2","title":"Project Two","description":"Web Development","imageSrc":"https://images.unsplash.com/photo-1605153864431-a2795a1b2f95?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwyNTY3ODl8fGVufDB8fHw%3D&auto=format&fit=crop&w=400&q=60","url":"http://chetanverma.com/"},{"id":"3","title":"Project Three","description":"Design","imageSrc":"https://images.unsplash.com/photo-1504083898675-c896ecdae86e?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8MjJ8fHBhc3RlbHxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=400&q=60","url":"http://chetanverma.com/"},{"id":"4","title":"Project Four","description":"Marketing","imageSrc":"https://images.unsplash.com/photo-1492171983775-a51717616c0d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8NjB8fHBhc3RlbHxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=400&q=60","url":"http://chetanverma.com/"},{"id":"5","title":"Project Five","description":"Development","imageSrc":"https://images.unsplash.com/photo-1534239143101-1b1c627395c5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8NzZ8fHBhc3RlbHxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=400&q=60","url":"http://chetanverma.com/"},{"id":"6","title":"Project Six","description":"Design & Development","imageSrc":"https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTAyfHxwYXN0ZWx8ZW58MHx8MHw%3D&auto=format&fit=crop&w=400&q=60","url":"http://chetanverma.com/"}],"services":[{"id":"1","title":"Art Direction","description":"We help with the creation and development of online advertising ideas, with particular focus on their visual appearance."},{"id":"2","title":"Branding","description":"We design key brand elements such as the logo, color scheme, typography, and other design components that makes your brand stand out from competitors."},{"id":"3","title":"Web Design","description":"We build and optimize your online presence.  Website is the digital entry point into your business and a powerful revenue channel."},{"id":"4","title":"3D Design","description":"We combine creative design and technical skills to build striking 3D visualisations that bring your project to life."}],"aboutpara":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","resume":{"tagline":"👋  I'm a software engineer, product designer.","description":"I have delivered world-class user experiences to millions of people. Well-versed with React, Javascript, and most of the Web frameworks.","experiences":[{"id":"1","dates":"March 2022 - Present","type":"Full Time","position":"Frontend Engineer at X","bullets":"Bullet One, Bullet Two"},{"id":"d495c23b-4f65-479a-9b8a-cfbc1c089725","dates":"July 2020 - March 2022","type":"Full Time","position":"Frontend Engineer at X","bullets":"Worked on the frontend of a React application, Worked on the frontend of a React application"}],"education":{"universityName":"University X","universityDate":"2016-2020","universityPara":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"},"languages":["Javascript","HTML5","CSS","Python","Go"],"frameworks":["React","Typescript","NodeJs"],"others":["Figma","AdobeXD","AWS"]}}
+{
+   "name":"Assem Alhomsi Portfolio",
+   "heroTitle": "Hi, I’m Assem Alhomsi.",
+   "heroSubtitle": "I’m an AI engineer focused on building practical generative AI systems — from RAG pipelines and LLM orchestration to backend APIs that ship to production.",
+   "showCursor":true,
+   "showBlog":false,
+   "darkMode":true,
+   "showResume":true,
+   "socials":[
+      {
+         "id":"1",
+         "title":"Github",
+         "link":"https://github.com/Assemh01"
+      },
+      {
+         "id":"2",
+         "title":"LinkedIn",
+         "link":"https://www.linkedin.com/in/assem-alhomsi-bbb87b23a/"
+      },
+      {
+         "id":"3",
+         "title":"Twitter",
+         "link":"https://x.com/HomsiAssem"
+      },
+      {
+         "id":"5",
+         "title":"Email",
+         "link":"mailto:assem.h2001@gmail.com"
+      }
+   ],
+   "projects": [
+      {
+         "id": 1,
+         "title": "boxMind Academy — AI-Powered Learning Platform",
+         "summary": "Built an AI-driven robotics learning platform for grades 1–12 with interactive tutoring, quizzes, and lesson-level chat assistance.",
+         "impact": "Enabled self-guided learning by replacing static content with step-by-step AI tutors and adaptive quiz guidance.",
+         "contributions": [
+            "Designed robotics curriculum for grades 1–12 in collaboration with stakeholders and school officials",
+            "Built backend infrastructure using Flask and MySQL to support lessons, quizzes, and user progress",
+            "Implemented lesson-scoped RAG system allowing students to ask questions about course material",
+            "Developed interactive AI tutor that guides students step-by-step instead of giving direct answers",
+            "Built quiz assistant that explains mistakes and leads students to correct reasoning"
+         ],
+         "stack": ["Python", "Flask", "MySQL", "RAG", "LangChain", "OpenAI API", "Docker"]
+      },
+      {
+         "id": 2,
+         "title": "boxMind Flagship App — Production GenAI Platform",
+         "summary": "Core GenAI platform powering multiple internal and customer-facing applications at boxMind.",
+         "impact": "Improved answer quality and reliability through custom model training, automated ingestion, and systematic evaluation.",
+         "contributions": [
+            "Fine-tuned and trained custom LLMs alongside OpenAI, LLaMA, and Mistral APIs",
+            "Designed and implemented scalable RAG architecture using Milvus vector database",
+            "Automated data ingestion and embedding pipelines using Apache Airflow",
+            "Added RAGAS-based evaluation to compare models, prompts, and hyperparameters",
+            "Deployed full application stack to AWS with containerized services"
+         ],
+         "stack": ["Python", "LangChain", "Milvus", "Airflow", "RAGAS", "AWS", "Docker", "Linux"]
+      },
+      {
+         "id": 3,
+         "title": "Financial Intelligence POC — NL → SQL for SWIFT Transactions",
+         "summary": "Proof-of-concept system enabling analysts to query SWIFT transaction data using natural language.",
+         "impact": "Reduced manual querying complexity by allowing non-technical users to analyze financial data via chat.",
+         "contributions": [
+            "Built LangGraph-based agent system to translate natural language into SQL queries",
+            "Performed prompt engineering to improve query correctness and reasoning steps",
+            "Fine-tuned custom model for domain-specific financial terminology and schema understanding",
+            "Integrated AI chatbot for transaction analysis and follow-up questions"
+         ],
+         "stack": ["Python", "LangGraph", "LangChain", "SQL", "LLM Fine-Tuning"]
+      },
+      {
+         "id": 4,
+         "title": "Applied AI POCs — Healthcare, Legal, and Customer Service",
+         "summary": "Developed multiple GenAI proof-of-concepts across regulated and real-time domains.",
+         "impact": "Demonstrated feasibility of AI assistants in healthcare, legal, and customer service environments.",
+         "contributions": [
+            "Built RAG system for hospital internal rules and regulations",
+            "Developed legal chatbot for document and policy querying",
+            "Implemented TTS/STT pipelines for stock brokers and fast-food ordering systems",
+            "Handled containerization, Linux setup, and deployment for rapid prototyping",
+            "Worked across backend, ML, and infrastructure roles in a startup environment"
+         ],
+         "stack": ["Python", "RAG", "TTS/STT", "Docker", "Linux", "OpenAI API"]
+      }
+      ],
+   "coreSkills": [
+      {
+         "title": "LLM & RAG Systems",
+         "description": "Production RAG pipelines, vector search, and agentic workflows for real-world AI apps.",
+         "hoverText": "Milvus · LangChain · LangGraph · RAGAS · LangSmith · A100"
+      },
+      {
+         "title": "Backend & APIs",
+         "description": "Scalable backend services powering AI features, integrations, and internal tools.",
+         "hoverText": "Flask · REST APIs · SQL · Docker · Linux"
+      },
+      {
+         "title": "ML Infrastructure",
+         "description": "Deploying and operating GPU-backed model serving with reliable CI/CD and monitoring.",
+         "hoverText": "vLLM · Hugging Face · CI/CD · GitHub Actions · Airflow"
+      },
+      {
+         "title": "Automation & Data Pipelines",
+         "description": "Ingestion, embeddings, evaluation, and workflow automation to ship faster with quality.",
+         "hoverText": "Embeddings · preprocessing · evaluation · workflow automation"
+      }
+   ],
+   "aboutpara": "I’m an AI engineer who builds production-ready GenAI systems end-to-end — from ingestion and RAG pipelines to agentic workflows and the backend services that ship them. At boxMind.ai, I deployed LLMs on NVIDIA A100 infrastructure, built inference APIs, and improved retrieval quality through evaluation-driven iteration. I enjoy owning the full stack of an AI product: embeddings, retrieval, orchestration, and deployment. Based in Dearborn Heights, MI.",
+   "resume": {
+      "tagline": "AI Engineer — LLM deployment, RAG systems, and scalable backend services",
+      "description": "AI Engineer specializing in LLM deployment, RAG systems, and scalable backend services. Experienced in building production-ready AI pipelines, vector search systems, and agentic workflows using GPU infrastructure and modern orchestration tools.",
+      "experiences": [
+         {
+            "id": "boxmind",
+            "dates": "July 2023 – July 2025",
+            "type": "Full Time",
+            "position": "Machine Learning & Generative AI Engineer — boxMind.ai",
+            "bullets": [
+               "Configured and deployed on-prem LLMs on NVIDIA A100 infrastructure, improving inference throughput by ~20%.",
+               "Built scalable Flask-based inference services for internal and external AI access with consistent low-latency responses.",
+               "Developed and maintained RAG pipelines using Milvus, LangChain, and LangGraph.",
+               "Implemented evaluation workflows with RAGAS and LangSmith, improving retrieval accuracy by 15–20%.",
+               "Engineered agentic LLM systems for automated content generation and workflow automation, reducing manual effort by ~30%.",
+               "Created data ingestion, embedding, and text preprocessing pipelines supporting multi-document retrieval and enterprise knowledge integration.",
+               "Automated deployment, testing, and monitoring using Docker, GitHub Actions, and Airflow.",
+               "Designed secure, maintainable backend components using Flask, SQL, and containerized services powering production AI features."
+            ]
+         },
+         {
+            "id": "iss-intern",
+            "dates": "August – September 2022",
+            "type": "Internship",
+            "position": "AI Development Intern — ISS (Software Hive)",
+            "bullets": [
+               "Built OCR pipelines using EasyOCR, PaddleOCR, and Keras.",
+               "Achieved 100% license plate recognition accuracy in controlled testing scenarios.",
+               "Performed model performance tuning, image preprocessing, and integration with NVR systems."
+            ]
+         },
+         {
+            "id": "handshake",
+            "dates": "November 2025 – Present",
+            "type": "Part Time (Remote)",
+            "position": "Fellow — Handshake AI",
+            "bullets": [
+               "Performed data annotation and quality review tasks to support model training and evaluation.",
+               "Contributed to improving dataset reliability and model performance through consistent labeling standards."
+            ]
+         },
+         {
+            "id": "w-institute",
+            "dates": "December 2025 – Present",
+            "type": "Part Time",
+            "position": "AI, Python, & Robotics Tutor — W Institute (Livonia, MI)",
+            "bullets": [
+               "Taught foundational Python programming, robotics, and introductory AI concepts to students.",
+               "Designed hands-on lessons and guided projects to reinforce problem-solving and computational thinking."
+            ]
+         }
+      ],
+      "education": {
+         "universityName": "Beirut Arab University — Beirut, Lebanon",
+         "universityDate": "Bachelor’s of Computer Engineering (2019–2023)",
+         "universityPara": ""
+      },
+      "languages": [
+         "LLM serving (A100, vLLM, Hugging Face)",
+         "RAG pipelines",
+         "Embeddings",
+         "Vector search",
+         "LangChain",
+         "LangGraph",
+         "OpenAI API"
+      ],
+      "frameworks": [
+         "Flask",
+         "REST APIs",
+         "SQL (PostgreSQL/MySQL)",
+         "Docker",
+         "CI/CD",
+         "Linux server administration"
+      ],
+      "others": [
+         "Milvus",
+         "Chroma",
+         "Pinecone",
+         "FAISS",
+         "RAGAS",
+         "LangSmith",
+         "Airflow",
+         "GitHub Actions",
+         "PyTorch",
+         "TensorFlow",
+         "scikit-learn",
+         "OpenCV",
+         "EasyOCR",
+         "PaddleOCR",
+         "AWS (Lambda, API Gateway, S3)"
+      ]
+   }
+}

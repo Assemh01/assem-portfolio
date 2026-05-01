@@ -9,7 +9,7 @@ const CodeBlock = {
     return !inline && match ? (
       <SyntaxHighlighter
         style={dracula}
-        language={match[1]}
+        language={match[1]} 
         PreTag="div"
         {...props}
       >

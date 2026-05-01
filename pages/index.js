@@ -9,6 +9,7 @@ import Head from "next/head";
 import Cursor from "../components/Cursor";
 import BackToTop from "../components/BackToTop";
 import ProjectItem from "../components/ProjectItem";
+import { useRouter } from "next/router";
 
 // Local Data
 import data from "../data/portfolio.json";
@@ -22,6 +23,7 @@ export default function Home() {
   const textThree = useRef();
   const textFour = useRef();
   const skillsRef = useRef();
+  const router = useRouter();
 
   // ===== Scroll handlers (Header nav -> scroll to sections) =====
   const handleWorkScroll = () => {
@@ -123,38 +125,86 @@ export default function Home() {
 
           {/* Hero content wrapper */}
           <div className="pt-0">
-            <div className="mt-6 laptop:mt-8">
-              <div className="mt-6 max-w-4xl">
-                {/* Hero Title */}
-                <h1
-                  ref={textOne}
-                  className="text-4xl tablet:text-5xl laptop:text-6xl font-bold leading-tight"
-                >
-                  {data.heroTitle}
-                </h1>
+            <div className="mt-6 laptop:mt-10 grid grid-cols-1 laptop:grid-cols-[1.15fr_0.85fr] gap-10 laptop:gap-16 items-center">
+              {/* Left hero */}
+              <div>
+                <div className="mt-6 max-w-4xl">
+                  <h1
+                    ref={textOne}
+                    className="text-4xl tablet:text-5xl laptop:text-6xl font-bold leading-tight"
+                  >
+                    {data.heroTitle}
+                  </h1>
 
-                {/* Hero Subtitle */}
-                <p
-                  ref={textTwo}
-                  className="mt-6 text-lg tablet:text-xl laptop:text-2xl text-gray-700 dark:text-gray-200 leading-relaxed max-w-3xl"
-                >
-                  {data.heroSubtitle}
-                </p>
+                  <p
+                    ref={textTwo}
+                    className="mt-6 text-lg tablet:text-xl laptop:text-2xl text-gray-700 dark:text-gray-200 leading-relaxed max-w-3xl"
+                  >
+                    {data.heroSubtitle}
+                  </p>
+                </div>
+
+                <div className="mt-6">
+                  <div className="inline-block">
+                    <p className="text-sm uppercase tracking-[0.35em] text-gray-900 dark:text-white">
+                      Connect
+                    </p>
+                    <div className="mt-1 h-px w-full bg-gray-900/40 dark:bg-white/50" />
+                  </div>
+                  <Socials className="mt-3 text-gray-900 dark:text-white" />
+                </div>
               </div>
 
-              {/* Social links row */}
-              <div className="mt-6">
-                <div className="inline-block">
-                  <p className="text-sm uppercase tracking-[0.35em] text-gray-900 dark:text-white">
-                    Connect
-                  </p>
-                  <div className="mt-1 h-px w-full bg-gray-900/40 dark:bg-white/50" />
-                </div>
-              <Socials className="mt-3 text-gray-900 dark:text-white" />
+              {/* Chat feature card */}
+              <div
+                ref={textThree}
+                className="
+                  w-full
+                  laptop:mt-6
+                  rounded-3xl
+                  border border-purple-300/30 dark:border-white/10
+                  bg-white/70 dark:bg-white/[0.04]
+                  backdrop-blur-xl
+                  p-6 laptop:p-7
+                  shadow-[0_20px_70px_rgba(0,0,0,0.10)]
+                  dark:shadow-none
+                "
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-purple-700 dark:text-purple-200/80">
+                  New feature
+                </p>
+
+                <h2 className="mt-4 text-2xl tablet:text-3xl font-semibold text-gray-900 dark:text-white">
+                  Chat with Assem
+                </h2>
+
+                <p className="mt-3 text-base tablet:text-lg text-gray-700 dark:text-white/70 leading-relaxed">
+                  Ask an AI version of me about my projects, skills, background, and experience.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => router.push("/chat")}
+                  className="
+                    mt-6
+                    rounded-xl
+                    bg-black text-white
+                    dark:bg-white dark:text-black
+                    px-5 py-3
+                    text-sm tablet:text-base font-medium
+                    transition
+                    hover:scale-[1.02]
+                    active:scale-[0.98]
+                    link
+                  "
+                >
+                  Try the chat →
+                </button>
               </div>
             </div>
           </div>
         </div>
+
 
         {/* =========================
             MAIN CONTENT (wide)

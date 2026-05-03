@@ -96,3 +96,66 @@ body {
   overflow-x: hidden; /* also helps the horizontal scroll issue */
 }
 
+.assistant-thinking {
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  animation: breathe 1.8s ease-in-out infinite;
+
+  box-shadow:
+    0 0 18px rgba(168,85,247,.45),
+    0 0 40px rgba(168,85,247,.22);
+}
+
+.assistant-thinking::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+
+  background: radial-gradient(
+    circle,
+    rgba(168,85,247,.20) 0%,
+    rgba(168,85,247,.08) 45%,
+    transparent 75%
+  );
+
+  filter: blur(10px);
+  z-index: -1;
+
+  animation: haloPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 16px rgba(168,85,247,.35),
+      0 0 30px rgba(168,85,247,.16);
+  }
+
+  50% {
+    transform: scale(1.07);
+    box-shadow:
+      0 0 24px rgba(168,85,247,.55),
+      0 0 52px rgba(168,85,247,.24);
+  }
+}
+
+@keyframes haloPulse {
+  0%,100% {
+    transform: scale(.98);
+    opacity: .75;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}

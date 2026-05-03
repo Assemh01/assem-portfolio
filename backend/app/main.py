@@ -2,6 +2,8 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+import asyncio
+from fastapi.responses import StreamingResponse
 
 from app.schemas import ChatRequest, ChatResponse
 from app.services.chat_service import generate_chat_response
@@ -32,7 +34,15 @@ def health():
     }
 
 
-@app.post("/chat", response_model=ChatResponse)
-def chat(payload: ChatRequest):
+@app.post("/chat")
+async def chat(payload: ChatRequest):
     response = generate_chat_response(payload.message)
-    return ChatResponse(response=response)
+
+    async def stream_response():
+        words = response.split(" ")
+
+        for word in words:
+            yield word + " "
+            await asyncio.sleep(0.08)
+
+    return StreamingResponse(stream_response(), media_type="text/plain")

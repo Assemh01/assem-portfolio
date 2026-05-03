@@ -168,7 +168,7 @@ const Header = ({ handleWorkScroll, handleSkillsScroll, handleAboutScroll }) => 
         </button>
 
         {/* Nav */}
-        <div className="flex">
+        <div className="flex items-center gap-3 ml-5">
           {onHome ? (
             <>
               <Button onClick={handleWorkScroll}>Work</Button>

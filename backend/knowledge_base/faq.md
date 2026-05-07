@@ -33,14 +33,13 @@ Fully authorized without sponsorship.
 ---
 
 ### Open to relocation?
-Yes.
+No.
 
 Open to:
 
-- onsite
+- onsite in Michigan
 - hybrid
 - remote
-- relocation opportunities
 
 ---
 

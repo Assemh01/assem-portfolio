@@ -16,11 +16,9 @@ last_updated: 2026-05-03
 **Current Status:** Open to AI / ML / Generative AI / Backend Engineering opportunities
 
 **Work Arrangement Preferences:**
-- Onsite in Michigan (preferred)
+- Onsite in Michigan
 - Hybrid
 - Remote
-- Open to relocation for strong opportunities
-
 ---
 
 ## Work Authorization
@@ -68,7 +66,7 @@ He naturally thinks in complete systems rather than isolated components.
 
 Before relocating permanently to the United States in July 2025, Assem built meaningful hands-on AI engineering experience internationally.
 
-His core engineering foundation was built through production work at :contentReference[oaicite:0]{index=0}, where he worked on:
+His core engineering foundation was built through production work at boxMind.ai, where he worked on:
 
 - production RAG systems
 - LLM deployment
@@ -91,7 +89,7 @@ This represents the foundation of his production AI engineering experience.
 
 ## Current Work
 
-Assem currently works as **AI Curator — Apple via Inspyr Solutions** at :contentReference[oaicite:1]{index=1}.
+Assem currently works as an **AI Curator at Apple via Inspyr Solutions**.
 
 His work involves:
 
@@ -189,4 +187,4 @@ Strong interest in:
 - workflow automation
 - applied AI products
 
-**Preferred work arrangement:** willing to work onsite in Michigan, hybrid, remote, or relocate for exceptional opportunities.
+**Preferred work arrangement:** willing to work onsite in Michigan, hybrid, or remote.

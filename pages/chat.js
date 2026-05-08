@@ -92,7 +92,14 @@ export default function ChatPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/chat", {
+      const assistantMessage = {
+        role: "assistant",
+        content: "",
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+
+      const res = await fetch("http://localhost:8000/chat/stream", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,13 +114,6 @@ export default function ChatPage() {
         throw new Error("No response body");
       }
 
-      const assistantMessage = {
-        role: "assistant",
-        content: "",
-      };
-
-      setMessages((prev) => [...prev, assistantMessage]);
-
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
 
@@ -122,17 +122,14 @@ export default function ChatPage() {
 
         if (done) break;
 
-        const chunk = decoder.decode(value);
+        const chunk = decoder.decode(value, { stream: true });
 
         setMessages((prev) => {
           const updated = [...prev];
-          const lastIndex = updated.length - 1;
-
-          updated[lastIndex] = {
-            ...updated[lastIndex],
-            content: updated[lastIndex].content + chunk,
+          updated[updated.length - 1] = {
+            ...updated[updated.length - 1],
+            content: updated[updated.length - 1].content + chunk,
           };
-
           return updated;
         });
       }
@@ -316,7 +313,9 @@ export default function ChatPage() {
                         <div className="flex items-end gap-3 max-w-[70%]">
                           <div
                             className={`shrink-0 mb-1 ${
-                              loading && index === messages.length - 1 ? "assistant-thinking" : ""
+                              loading && index === messages.length - 1
+                                ? "assistant-thinking"
+                                : ""
                             }`}
                           >
                             <Image
@@ -327,23 +326,23 @@ export default function ChatPage() {
                               className="object-contain"
                             />
                           </div>
-                          <div
-                            className="
-                              rounded-2xl px-5 py-3 text-sm tablet:text-base
 
-                              bg-white/95
-                              text-gray-900
-                              border-2 border-purple-200/80
-                              shadow-[0_12px_34px_rgba(88,28,135,0.10)]
-
-                              dark:bg-white/[0.08]
-                              dark:text-white
-                              dark:border dark:border-white/10
-                              dark:shadow-none
-                            "
-                          >
-                            {msg.content}
-                          </div>
+                          {msg.content && (
+                            <div
+                              className="
+                                rounded-2xl px-5 py-3 text-sm tablet:text-base
+                                bg-white/95 text-gray-900
+                                border-2 border-purple-200/80
+                                shadow-[0_12px_34px_rgba(88,28,135,0.10)]
+                                dark:bg-white/[0.08]
+                                dark:text-white
+                                dark:border dark:border-white/10
+                                dark:shadow-none
+                              "
+                            >
+                              {msg.content}
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <div

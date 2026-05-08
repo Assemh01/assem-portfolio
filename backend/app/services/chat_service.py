@@ -1,15 +1,12 @@
 from app.services.retriever import retrieve_context
+from app.services.local_llm import generate_with_local_llm, stream_with_local_llm
 
 
-def generate_chat_response(message: str) -> str:
+def generate_chat_response(message: str, history=None) -> str:
     context = retrieve_context(message, k=5)
+    return generate_with_local_llm(message, context, history)
 
-    return f"""
-I found relevant context for this question.
 
-Question:
-{message}
-
-Retrieved context:
-{context[:2500]}
-""".strip()
+def stream_chat_response(message: str, history=None):
+    context = retrieve_context(message, k=5)
+    yield from stream_with_local_llm(message, context, history)

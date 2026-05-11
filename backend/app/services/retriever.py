@@ -1,11 +1,25 @@
-from typing import List, Dict, Any
-
+from typing import Any, Dict, List
+from app.services.reranker import rerank_chunks
 from app.services.vector_store import retrieve_relevant_chunks
 
 
-def retrieve_context(query: str, k: int = 6) -> str:
-    chunks = retrieve_relevant_chunks(query=query, k=k)
+PROJECT_QUERY_TERMS = [
+    "project",
+    "projects",
+    "built",
+    "build",
+    "worked on",
+    "portfolio",
+    "case study",
+]
 
+
+def is_project_query(query: str) -> bool:
+    query_lower = query.lower()
+    return any(term in query_lower for term in PROJECT_QUERY_TERMS)
+
+
+def format_context_blocks(chunks: List[Dict[str, Any]]) -> str:
     context_blocks = []
 
     for chunk in chunks:
@@ -23,6 +37,77 @@ Section: {metadata.get("section_title")}
 
     return "\n\n---\n\n".join(context_blocks)
 
+def is_broad_project_query(query: str) -> bool:
+    q = query.lower()
+    return (
+        "what projects" in q
+        or "projects has" in q
+        or "worked on" in q
+        or "what has assem built" in q
+    )
+
+
+def retrieve_context(query: str, k: int = 8) -> str:
+    project_query = is_project_query(query)
+
+    initial_k = 40 if project_query else 16
+
+    chunks = retrieve_relevant_chunks(query=query, k=initial_k)
+
+    if project_query:
+        project_chunks = [
+            chunk
+            for chunk in chunks
+            if chunk["metadata"].get("category") == "projects"
+            or chunk["metadata"].get("source_file") == "projects.md"
+        ]
+
+        if len(project_chunks) >= 6:
+            chunks = project_chunks
+        else:
+            chunks = retrieve_relevant_chunks(query="boxMind Flagship Platform boxMind Academy Financial Intelligence Enterprise Knowledge Speech AI Document OCR projects", k=24)
+
+            chunks = [
+                chunk
+                for chunk in chunks
+                if chunk["metadata"].get("category") == "projects"
+                or chunk["metadata"].get("source_file") == "projects.md"
+            ]
+
+    print("\nBEFORE RERANK:")
+    for i, chunk in enumerate(chunks, 1):
+        print(
+            i,
+            chunk["metadata"].get("section_title"),
+            "distance:",
+            chunk.get("distance"),
+        )
+
+    chunks = rerank_chunks(query, chunks, top_k=k)
+
+    if is_broad_project_query(query):
+        named_summary = [
+            chunk for chunk in chunks
+            if chunk["metadata"].get("section_title") == "Named Project Summary"
+        ]
+
+        others = [
+            chunk for chunk in chunks
+            if chunk["metadata"].get("section_title") != "Named Project Summary"
+        ]
+
+        chunks = named_summary + others
+
+    print("\nAFTER RERANK:")
+    for i, chunk in enumerate(chunks, 1):
+        print(
+            i,
+            chunk["metadata"].get("section_title"),
+            "score:",
+            chunk.get("rerank_score"),
+        )
+
+    return format_context_blocks(chunks)
 
 if __name__ == "__main__":
     test_queries = [
@@ -38,4 +123,4 @@ if __name__ == "__main__":
         print("\n==============================")
         print("QUERY:", query)
         print("==============================")
-        print(retrieve_context(query, k=4)[:3000])
+        print(retrieve_context(query, k=8)[:4000])

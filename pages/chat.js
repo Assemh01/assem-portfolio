@@ -5,6 +5,7 @@ import Cursor from "../components/Cursor";
 import data from "../data/portfolio.json";
 import Image from "next/image";
 import { ArrowUp, PanelLeft } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 export default function ChatPage() {
   const [message, setMessage] = useState("");
@@ -75,7 +76,12 @@ export default function ChatPage() {
   }, [messages]);
 
   useEffect(() => {
-    scrollToBottom();
+    const nearBottom =
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 180;
+
+    if (nearBottom) {
+      scrollToBottom();
+    }
   }, [messages]);
   const sendMessage = async (prefill = null) => {
     const content = (prefill ?? message).trim();
@@ -310,9 +316,9 @@ export default function ChatPage() {
                       }`}
                     >
                       {msg.role === "assistant" ? (
-                        <div className="flex items-end gap-3 max-w-[70%]">
+                        <div className="flex items-end gap-3 max-w-[68%]">
                           <div
-                            className={`shrink-0 mb-1 ${
+                            className={`shrink-0 mt-1 ${
                               loading && index === messages.length - 1
                                 ? "assistant-thinking"
                                 : ""
@@ -330,7 +336,7 @@ export default function ChatPage() {
                           {msg.content && (
                             <div
                               className="
-                                rounded-2xl px-5 py-3 text-sm tablet:text-base
+                                rounded-2xl px-5 py-3 text-sm tablet:text-base leading-relaxed
                                 bg-white/95 text-gray-900
                                 border-2 border-purple-200/80
                                 shadow-[0_12px_34px_rgba(88,28,135,0.10)]
@@ -340,7 +346,22 @@ export default function ChatPage() {
                                 dark:shadow-none
                               "
                             >
-                              {msg.content}
+                              <div
+                                className="
+                                  prose prose-sm tablet:prose-base
+                                  max-w-none
+                                  prose-p:my-2
+                                  prose-ul:my-2
+                                  prose-ol:my-2
+                                  prose-li:my-1
+                                  prose-strong:text-inherit
+                                  prose-headings:text-inherit
+                                  prose-code:text-inherit
+                                  dark:prose-invert
+                                "
+                              >
+                                <ReactMarkdown>{msg.content}</ReactMarkdown>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -383,7 +404,22 @@ export default function ChatPage() {
                 </button>
               </div>
             )}
-            <div className="fixed bottom-6 left-1/2 z-20 w-full max-w-4xl -translate-x-1/2 px-4">
+            <div
+              className="
+                fixed bottom-0 left-1/2 -translate-x-1/2
+                z-20 w-full max-w-4xl px-4
+                pb-6 pt-10
+              "
+            >
+              <div
+                className="
+                  absolute inset-0 -z-10
+                  bg-gradient-to-t
+                  from-white via-white/92 to-transparent
+                  dark:from-black dark:via-black/88 dark:to-transparent
+                "
+              />
+
               <div className="flex gap-3">
                 <input
                   type="text"

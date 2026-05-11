@@ -253,20 +253,14 @@ This experience complements his engineering background by improving how he desig
 ## ISS  
 ### AI Development Intern
 
-Worked on OCR and computer vision systems involving:
+Worked on OCR and computer vision pipelines for license plate recognition.
 
-- OCR pipelines
-- preprocessing
-- recognition optimization
-- experimentation
-- extraction workflows
+Focused on:
 
-Tools:
-
-- EasyOCR
-- PaddleOCR
-- Keras
-- OpenCV
+- image preprocessing
+- OCR accuracy optimization
+- recognition pipeline experimentation
+- extraction quality improvements
 
 ---
 

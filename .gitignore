@@ -27,6 +27,19 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+backend/.env
 
 # vercel
 .vercel
+
+# Python
+__pycache__/
+*.pyc
+
+# Python virtual envs
+venv/
+backend/venv/
+
+# Chroma vector DB
+backend/chroma_db/

@@ -1,7 +1,7 @@
 from typing import Any, Dict, List
 from app.services.reranker import rerank_chunks
 from app.services.vector_store import retrieve_relevant_chunks
-
+import time
 
 PROJECT_QUERY_TERMS = [
     "project",
@@ -48,11 +48,20 @@ def is_broad_project_query(query: str) -> bool:
 
 
 def retrieve_context(query: str, k: int = 8) -> str:
+    total_start = time.perf_counter()
+
     project_query = is_project_query(query)
 
     initial_k = 40 if project_query else 16
 
-    chunks = retrieve_relevant_chunks(query=query, k=initial_k)
+    vector_start = time.perf_counter()
+
+    chunks = retrieve_relevant_chunks(
+        query=query,
+        k=initial_k,
+    )
+
+    vector_time = time.perf_counter() - vector_start
 
     if project_query:
         project_chunks = [
@@ -65,7 +74,24 @@ def retrieve_context(query: str, k: int = 8) -> str:
         if len(project_chunks) >= 6:
             chunks = project_chunks
         else:
-            chunks = retrieve_relevant_chunks(query="boxMind Flagship Platform boxMind Academy Financial Intelligence Enterprise Knowledge Speech AI Document OCR projects", k=24)
+            fallback_start = time.perf_counter()
+
+            chunks = retrieve_relevant_chunks(
+                query="""
+boxMind Flagship Platform
+boxMind Academy
+Financial Intelligence
+Enterprise Knowledge
+Speech AI
+Document OCR
+projects
+""",
+                k=24,
+            )
+
+            fallback_time = time.perf_counter() - fallback_start
+
+            print(f"\nFallback Retrieval: {fallback_time:.2f}s")
 
             chunks = [
                 chunk
@@ -83,17 +109,25 @@ def retrieve_context(query: str, k: int = 8) -> str:
             chunk.get("distance"),
         )
 
+    rerank_start = time.perf_counter()
+
     chunks = rerank_chunks(query, chunks, top_k=k)
+
+    rerank_time = time.perf_counter() - rerank_start
 
     if is_broad_project_query(query):
         named_summary = [
-            chunk for chunk in chunks
-            if chunk["metadata"].get("section_title") == "Named Project Summary"
+            chunk
+            for chunk in chunks
+            if chunk["metadata"].get("section_title")
+            == "Named Project Summary"
         ]
 
         others = [
-            chunk for chunk in chunks
-            if chunk["metadata"].get("section_title") != "Named Project Summary"
+            chunk
+            for chunk in chunks
+            if chunk["metadata"].get("section_title")
+            != "Named Project Summary"
         ]
 
         chunks = named_summary + others
@@ -106,6 +140,15 @@ def retrieve_context(query: str, k: int = 8) -> str:
             "score:",
             chunk.get("rerank_score"),
         )
+
+    total_time = time.perf_counter() - total_start
+
+    print("\n" + "-" * 80)
+    print("RETRIEVAL METRICS")
+    print(f"Vector Retrieval: {vector_time:.2f}s")
+    print(f"Reranking: {rerank_time:.2f}s")
+    print(f"Total Retrieval: {total_time:.2f}s")
+    print("-" * 80 + "\n")
 
     return format_context_blocks(chunks)
 

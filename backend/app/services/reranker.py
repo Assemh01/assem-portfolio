@@ -1,6 +1,6 @@
 from sentence_transformers import CrossEncoder
 
-MODEL_NAME = "BAAI/bge-reranker-large"
+MODEL_NAME = "BAAI/bge-reranker-base"
 
 reranker = CrossEncoder(MODEL_NAME)
 

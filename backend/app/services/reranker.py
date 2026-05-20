@@ -1,7 +1,7 @@
 from sentence_transformers import CrossEncoder
+from app.core.config import settings
 
-MODEL_NAME = "BAAI/bge-reranker-base"
-
+MODEL_NAME = settings.RERANKER_MODEL
 reranker = CrossEncoder(MODEL_NAME)
 
 

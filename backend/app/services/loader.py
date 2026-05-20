@@ -1,10 +1,11 @@
 from pathlib import Path
 from typing import Any, Dict, List
-
+from app.core.config import settings
+from app.core.logger import logger
 import frontmatter
 
 
-KNOWLEDGE_DIR = Path(__file__).resolve().parents[2] / "knowledge_base"
+KNOWLEDGE_DIR = Path(__file__).resolve().parents[2] / settings.KNOWLEDGE_DIR
 
 
 def split_markdown_by_headings(content: str) -> List[Dict[str, str]]:
@@ -68,9 +69,9 @@ def load_knowledge_base() -> List[Dict[str, Any]]:
 
 if __name__ == "__main__":
     docs = load_knowledge_base()
-    print(f"Loaded {len(docs)} chunks")
+    logger.info(f"Loaded {len(docs)} chunks")
     for doc in docs[:3]:
-        print("---")
-        print(doc["id"])
-        print(doc["metadata"])
-        print(doc["text"][:300])
+        logger.info("---")
+        logger.info(doc["id"])
+        logger.info(doc["metadata"])
+        logger.info(doc["text"][:300])

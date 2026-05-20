@@ -1,24 +1,21 @@
-import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-import asyncio
 from fastapi.responses import StreamingResponse
 from app.schemas import ChatRequest, ChatResponse
 from app.services.chat_service import generate_chat_response, stream_chat_response
-
-load_dotenv()
+from app.core.config import settings
+from app.middleware.request_id import RequestIDMiddleware
 
 app = FastAPI(
-    title="Assem Portfolio Chatbot API",
-    version="0.1.0",
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION,
 )
 
-frontend_origin = os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")
+app.add_middleware(RequestIDMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[frontend_origin],
+    allow_origins=[settings.FRONTEND_ORIGIN],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,16 +31,21 @@ def health():
 
 
 @app.post("/chat", response_model=ChatResponse)
-def chat(payload: ChatRequest):
+def chat(request: Request, payload: ChatRequest):
     response = generate_chat_response(
-        payload.message,
-        payload.history
-    )
+    payload.message,
+    payload.history,
+    request_id=request.state.request_id,
+)  
     return ChatResponse(response=response)
 
 @app.post("/chat/stream")
-def chat_stream(payload: ChatRequest):
+def chat_stream(request: Request, payload: ChatRequest):
     return StreamingResponse(
-        stream_chat_response(payload.message, payload.history),
-        media_type="text/plain",
-    )
+        stream_chat_response(
+        payload.message,
+        payload.history,
+        request_id=request.state.request_id,
+    ),
+    media_type="text/plain",
+)

@@ -2,22 +2,21 @@ from typing import Any, Dict, List
 
 import chromadb
 from chromadb.utils import embedding_functions
-
+from app.core.config import settings
 from app.services.loader import load_knowledge_base
+from app.core.logger import logger
 
-
-CHROMA_DIR = "chroma_db"
-COLLECTION_NAME = "assem_portfolio_knowledge"
+COLLECTION_NAME = settings.COLLECTION_NAME
 
 
 def get_embedding_function():
     return embedding_functions.SentenceTransformerEmbeddingFunction(
-        model_name="BAAI/bge-base-en-v1.5"
+        settings.EMBEDDING_MODEL
     )
 
 
 def get_collection():
-    client = chromadb.PersistentClient(path=CHROMA_DIR)
+    client = chromadb.PersistentClient(path=settings.CHROMA_DIR)
 
     return client.get_or_create_collection(
         name=COLLECTION_NAME,
@@ -40,7 +39,7 @@ def rebuild_vector_store() -> None:
         metadatas=[doc["metadata"] for doc in docs],
     )
 
-    print(f"Indexed {len(docs)} chunks into Chroma.")
+    logger.info(f"Indexed {len(docs)} chunks into Chroma.")
 
 
 def retrieve_relevant_chunks(query: str, k: int = 6) -> List[Dict[str, Any]]:
@@ -70,9 +69,9 @@ if __name__ == "__main__":
     test_query = "Does Assem need sponsorship?"
     results = retrieve_relevant_chunks(test_query)
 
-    print("\nTest query:", test_query)
+    logger.info(f"Test query: {test_query}")
     for chunk in results:
-        print("---")
-        print(chunk["id"], chunk["distance"])
-        print(chunk["metadata"])
-        print(chunk["text"][:400])
+        logger.info("---")
+        logger.info(f"{chunk['id']} | {chunk['distance']}")
+        logger.info(chunk["metadata"])
+        logger.info(chunk["text"][:400])

@@ -2,30 +2,41 @@ from app.services.retriever import retrieve_context
 from app.services.local_llm import generate_with_local_llm, stream_with_local_llm
 from app.services.hosted_llm import generate_with_hosted_llm, stream_with_hosted_llm
 import time
+from app.core.config import settings
+from app.core.logger import logger
 
-DEBUG_RETRIEVAL = True
-
-
-def debug_print(message: str, context: str):
-    if not DEBUG_RETRIEVAL:
+def debug_print(
+        message: str,
+        context: str,
+        request_id: str = "unknown",
+    ):
+    if not settings.DEBUG_RETRIEVAL:
         return
 
-    print("\n" + "=" * 80)
-    print("QUESTION:")
-    print(message)
-    print("\nRETRIEVED CONTEXT:")
-    print(context[:4000])
-    print("=" * 80 + "\n")
+    logger.info(f"[{request_id}] " + "=" * 80)
+    logger.info(f"[{request_id}] QUESTION: {message}")
+    logger.info(f"[{request_id}] RETRIEVED CONTEXT:")
+    logger.info(f"[{request_id}] {context[:4000]}")
+    logger.info(f"[{request_id}] " + "=" * 80)
 
 
-def generate_chat_response(message: str, history=None) -> str:
+def generate_chat_response(
+        message: str,
+        history=None,
+        request_id: str = "unknown",
+    ) -> str:
+    
     total_start = time.perf_counter()
 
     retrieval_start = time.perf_counter()
-    context = retrieve_context(message, k=8)
+    context = retrieve_context(
+        message,
+        k=settings.RETRIEVAL_K,
+        request_id=request_id,
+    )
     retrieval_time = time.perf_counter() - retrieval_start
 
-    debug_print(message, context)
+    debug_print(message, context, request_id)
 
     generation_start = time.perf_counter()
     response = generate_with_hosted_llm(message, context, history)
@@ -33,24 +44,32 @@ def generate_chat_response(message: str, history=None) -> str:
 
     total_time = time.perf_counter() - total_start
 
-    print("\n" + "=" * 80)
-    print("LATENCY")
-    print(f"Retrieval: {retrieval_time:.2f}s")
-    print(f"Generation: {generation_time:.2f}s")
-    print(f"Total: {total_time:.2f}s")
-    print("=" * 80 + "\n")
+    logger.info(f"[{request_id}] " + "=" * 80)
+    logger.info(f"[{request_id}] LATENCY")
+    logger.info(f"[{request_id}] Retrieval: {retrieval_time:.2f}s")
+    logger.info(f"[{request_id}] Generation: {generation_time:.2f}s")
+    logger.info(f"[{request_id}] Total: {total_time:.2f}s")
+    logger.info(f"[{request_id}] " + "=" * 80)
 
     return response
 
 
-def stream_chat_response(message: str, history=None):
+def stream_chat_response(
+        message: str,
+        history=None,
+        request_id: str = "unknown",
+    ):
     total_start = time.perf_counter()
 
     retrieval_start = time.perf_counter()
-    context = retrieve_context(message, k=8)
+    context = retrieve_context(
+        message,
+        k=settings.RETRIEVAL_K,
+        request_id=request_id,
+    )
     retrieval_time = time.perf_counter() - retrieval_start
 
-    debug_print(message, context)
+    debug_print(message, context, request_id)
 
     generation_start = time.perf_counter()
 
@@ -60,9 +79,9 @@ def stream_chat_response(message: str, history=None):
     generation_time = time.perf_counter() - generation_start
     total_time = time.perf_counter() - total_start
 
-    print("\n" + "=" * 80)
-    print("LATENCY")
-    print(f"Retrieval: {retrieval_time:.2f}s")
-    print(f"Generation: {generation_time:.2f}s")
-    print(f"Total: {total_time:.2f}s")
-    print("=" * 80 + "\n")
+    logger.info("=" * 80)
+    logger.info("LATENCY")
+    logger.info(f"Retrieval: {retrieval_time:.2f}s")
+    logger.info(f"Generation: {generation_time:.2f}s")
+    logger.info(f"Total: {total_time:.2f}s")
+    logger.info("=" * 80)

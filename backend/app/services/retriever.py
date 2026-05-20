@@ -2,6 +2,8 @@ from typing import Any, Dict, List
 from app.services.reranker import rerank_chunks
 from app.services.vector_store import retrieve_relevant_chunks
 import time
+from app.core.config import settings
+from app.core.logger import logger
 
 PROJECT_QUERY_TERMS = [
     "project",
@@ -47,19 +49,43 @@ def is_broad_project_query(query: str) -> bool:
     )
 
 
-def retrieve_context(query: str, k: int = 8) -> str:
+def retrieve_context(
+        query: str,
+        k: int = settings.RETRIEVAL_K,
+        request_id: str = "unknown",
+    ) -> str:
+    
     total_start = time.perf_counter()
 
     project_query = is_project_query(query)
 
-    initial_k = 40 if project_query else 16
+    initial_k = (
+        settings.PROJECT_RETRIEVAL_K
+        if project_query
+        else settings.INITIAL_RETRIEVAL_K
+    )
 
     vector_start = time.perf_counter()
 
     chunks = retrieve_relevant_chunks(
         query=query,
         k=initial_k,
+        request_id=request_id,
     )
+    # Deduplicate overlapping chunks
+    deduped_chunks = []
+    seen_texts = set()
+
+    for chunk in chunks:
+        text_key = chunk["text"][:200].strip()
+
+        if text_key in seen_texts:
+            continue
+
+        seen_texts.add(text_key)
+        deduped_chunks.append(chunk)
+
+    chunks = deduped_chunks
 
     vector_time = time.perf_counter() - vector_start
 
@@ -86,12 +112,14 @@ Speech AI
 Document OCR
 projects
 """,
-                k=24,
+                k=settings.FALLBACK_PROJECT_RETRIEVAL_K,
             )
 
             fallback_time = time.perf_counter() - fallback_start
 
-            print(f"\nFallback Retrieval: {fallback_time:.2f}s")
+            logger.info(
+                f"[{request_id}] Fallback Retrieval: {fallback_time:.2f}s"
+            )
 
             chunks = [
                 chunk
@@ -100,14 +128,15 @@ projects
                 or chunk["metadata"].get("source_file") == "projects.md"
             ]
 
-    print("\nBEFORE RERANK:")
-    for i, chunk in enumerate(chunks, 1):
-        print(
-            i,
-            chunk["metadata"].get("section_title"),
-            "distance:",
-            chunk.get("distance"),
-        )
+    if settings.DEBUG_RETRIEVAL:
+        logger.info(f"[{request_id}] BEFORE RERANK")
+
+        for i, chunk in enumerate(chunks, 1):
+            logger.info(
+                f"[{request_id}] {i} | "
+                f"{chunk['metadata'].get('section_title')} | "
+                f"distance: {chunk.get('distance')}"
+            )
 
     rerank_start = time.perf_counter()
 
@@ -132,23 +161,22 @@ projects
 
         chunks = named_summary + others
 
-    print("\nAFTER RERANK:")
+    logger.info(f"[{request_id}] AFTER RERANK")
     for i, chunk in enumerate(chunks, 1):
-        print(
-            i,
-            chunk["metadata"].get("section_title"),
-            "score:",
-            chunk.get("rerank_score"),
+        logger.info(
+            f"[{request_id}] {i} | "
+            f"{chunk['metadata'].get('section_title')} | "
+            f"score: {chunk.get('rerank_score')}"
         )
 
     total_time = time.perf_counter() - total_start
 
-    print("\n" + "-" * 80)
-    print("RETRIEVAL METRICS")
-    print(f"Vector Retrieval: {vector_time:.2f}s")
-    print(f"Reranking: {rerank_time:.2f}s")
-    print(f"Total Retrieval: {total_time:.2f}s")
-    print("-" * 80 + "\n")
+    logger.info(f"[{request_id}] " + "-" * 80)
+    logger.info(f"[{request_id}] RETRIEVAL METRICS")
+    logger.info(f"[{request_id}] Vector Retrieval: {vector_time:.2f}s")
+    logger.info(f"[{request_id}] Reranking: {rerank_time:.2f}s")
+    logger.info(f"[{request_id}] Total Retrieval: {total_time:.2f}s")
+    logger.info(f"[{request_id}] " + "-" * 80)
 
     return format_context_blocks(chunks)
 
@@ -163,7 +191,7 @@ if __name__ == "__main__":
     ]
 
     for query in test_queries:
-        print("\n==============================")
-        print("QUERY:", query)
-        print("==============================")
-        print(retrieve_context(query, k=8)[:4000])
+        logger.info("=" * 30)
+        logger.info(f"QUERY: {query}")
+        logger.info("=" * 30)
+        logger.info(retrieve_context(query, k=8, request_id="manual-test")[:4000])

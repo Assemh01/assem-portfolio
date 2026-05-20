@@ -6,6 +6,29 @@ import data from "../data/portfolio.json";
 import Image from "next/image";
 import { ArrowUp, PanelLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+
+const CodeBlock = {
+  code({ inline, className, children, ...props }) {
+    const match = /language-(\w+)/.exec(className || "");
+
+    return !inline && match ? (
+      <SyntaxHighlighter
+        style={dracula}
+        language={match[1]}
+        PreTag="div"
+        {...props}
+      >
+        {String(children).replace(/\n$/, "")}
+      </SyntaxHighlighter>
+    ) : (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
+  },
+};
 
 export default function ChatPage() {
   const [message, setMessage] = useState("");
@@ -104,8 +127,10 @@ export default function ChatPage() {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+      const API_URL =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${API_URL}/chat/stream`, {
 
-      const res = await fetch("http://localhost:8000/chat/stream", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -360,7 +385,9 @@ export default function ChatPage() {
                                   dark:prose-invert
                                 "
                               >
-                                <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                <ReactMarkdown components={CodeBlock}>
+                                  {msg.content}
+                                </ReactMarkdown>
                               </div>
                             </div>
                           )}

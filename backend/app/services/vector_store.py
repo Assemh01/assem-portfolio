@@ -42,7 +42,11 @@ def rebuild_vector_store() -> None:
     logger.info(f"Indexed {len(docs)} chunks into Chroma.")
 
 
-def retrieve_relevant_chunks(query: str, k: int = 6) -> List[Dict[str, Any]]:
+def retrieve_relevant_chunks(
+        query: str,
+        k: int = 6,
+        request_id: str = "unknown",
+    ) -> List[Dict[str, Any]]:
     collection = get_collection()
 
     results = collection.query(

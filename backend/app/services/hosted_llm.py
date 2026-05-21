@@ -1,10 +1,10 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 from app.core.config import settings
-from app.prompts import system_prompt
+from app.prompts.system_prompt import SYSTEM_PROMPT
 
 load_dotenv()
-client = OpenAI()
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 MODEL_NAME = settings.OPENAI_MODEL
 
@@ -19,9 +19,6 @@ def _normalize_history_message(msg):
         "role": getattr(msg, "role", "user"),
         "content": getattr(msg, "content", ""),
     }
-
-
-SYSTEM_PROMPT = system_prompt
 
 
 def generate_with_hosted_llm(question: str, context: str, history=None):

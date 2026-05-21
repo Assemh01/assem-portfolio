@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Cursor from "../components/Cursor";
 import data from "../data/portfolio.json";
 import Image from "next/image";
-import { ArrowUp, PanelLeft } from "lucide-react";
+import { ArrowUp, PanelLeft, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
@@ -106,6 +106,7 @@ export default function ChatPage() {
       scrollToBottom();
     }
   }, [messages]);
+  const controllerRef = useRef(null);
   const sendMessage = async (prefill = null) => {
     const content = (prefill ?? message).trim();
 
@@ -129,8 +130,10 @@ export default function ChatPage() {
       setMessages((prev) => [...prev, assistantMessage]);
       const API_URL =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const res = await fetch(`${API_URL}/chat/stream`, {
+      const controller = new AbortController();
+      controllerRef.current = controller;
 
+      const res = await fetch(`${API_URL}/chat/stream`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,6 +142,7 @@ export default function ChatPage() {
           message: content,
           history: messages,
         }),
+        signal: controller.signal,
       });
 
       if (!res.body) {
@@ -157,25 +161,41 @@ export default function ChatPage() {
 
         setMessages((prev) => {
           const updated = [...prev];
+          const lastMessage = updated[updated.length - 1];
+          if (!lastMessage) return prev;
+
           updated[updated.length - 1] = {
-            ...updated[updated.length - 1],
-            content: updated[updated.length - 1].content + chunk,
+            ...lastMessage,
+            content: (lastMessage.content || "") + chunk,
           };
           return updated;
         });
       }
     } catch (error) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: "Something went wrong.",
-        },
-      ]);
-    } finally {
+        if (error.name === "AbortError") {
+          console.log("Generation stopped");
+          return;
+        }
+
+        setMessages((prev) => {
+          const updated = [...prev];
+
+          updated[updated.length - 1] = {
+            ...updated[updated.length - 1],
+            content: "Something went wrong.",
+          };
+
+          return updated;
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const stopGeneration = () => {
+      controllerRef.current?.abort();
       setLoading(false);
-    }
-  };
+    };
   return (
     <div className={`relative min-h-screen ${data.showCursor ? "cursor-none" : ""}`}>
       <Head>
@@ -393,14 +413,48 @@ export default function ChatPage() {
                           )}
                         </div>
                       ) : (
-                        <div
-                          className="
-                            max-w-[70%] rounded-2xl px-5 py-3
-                            text-sm tablet:text-base
-                            bg-purple-600 text-white
-                          "
-                        >
-                          {msg.content}
+                        <div className="flex items-end gap-2 max-w-[72%] flex-row-reverse">
+                          <div
+                            className="
+                              h-[38px] w-[38px]
+                              shrink-0 rounded-full
+
+                              flex items-center justify-center
+
+                              bg-white/[0.05]
+                              dark:bg-white/[0.04]
+
+                              backdrop-blur-md
+
+                              ring-1 ring-white/10
+
+                              shadow-[0_0_12px_rgba(255,255,255,0.03)]
+                            "
+                          >
+                            <User
+                              size={17}
+                              strokeWidth={2}
+                              className="
+                                text-white/65
+                              "
+                            />
+                          </div>
+                          <div
+                            className="
+                              rounded-2xl px-5 py-3
+                              text-sm tablet:text-base
+
+                              bg-purple-600 text-white
+
+                              shadow-[0_10px_28px_rgba(126,34,206,0.22)]
+
+                              dark:bg-gradient-to-b
+                              dark:from-purple-500
+                              dark:to-purple-700
+                            "
+                          >
+                            {msg.content}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -481,25 +535,48 @@ export default function ChatPage() {
                 />
 
                 <button
-                  type="button"
-                  onClick={() => sendMessage()}
-                  disabled={loading}
-                  className={`
-                    h-[56px] w-[56px]
-                    shrink-0 rounded-full
-                    flex items-center justify-center
-                    text-gray-900 dark:text-black
-                    border border-gray-300 dark:border-white/70
-                    transition-all duration-300
-                    ${
-                      loading
-                        ? "bg-white/50 dark:bg-white/50 opacity-50 cursor-not-allowed"
-                        : "bg-white dark:bg-white hover:shadow-[0_0_24px_rgba(168,85,247,0.22)] hover:scale-105"
-                    }
-                  `}
-                >
-                  <ArrowUp size={21} strokeWidth={2.4} />
-                </button>
+  type="button"
+  onClick={loading ? stopGeneration : () => sendMessage()}
+  className={`
+    h-[56px] w-[56px]
+    shrink-0 rounded-full
+    flex items-center justify-center
+    transition-all duration-300
+    border
+
+    ${
+      loading
+        ? `
+          bg-white dark:bg-white
+          border-white/80 dark:border-white/80
+          hover:scale-105
+          hover:shadow-[0_0_24px_rgba(168,85,247,0.22)]
+        `
+        : `
+          bg-white dark:bg-white
+          border-gray-300 dark:border-white/70
+          hover:scale-105
+          hover:shadow-[0_0_24px_rgba(168,85,247,0.22)]
+        `
+    }
+  `}
+>
+  {loading ? (
+    <div
+      className="
+        h-[14px] w-[14px]
+        rounded-[4px]
+        bg-black
+      "
+    />
+  ) : (
+    <ArrowUp
+      size={21}
+      strokeWidth={2.4}
+      className="text-gray-900 dark:text-black"
+    />
+  )}
+</button>
               </div>
             </div>
           </div>

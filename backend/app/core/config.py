@@ -3,6 +3,12 @@ from functools import lru_cache
 
 
 class Settings(BaseSettings):
+    # Environment
+    APP_ENV: str = "development"
+
+    # API Keys
+    OPENAI_API_KEY: str
+
     # App
     APP_NAME: str = "Assem Portfolio API"
     APP_VERSION: str = "0.1.0"
@@ -20,11 +26,16 @@ class Settings(BaseSettings):
     RETRIEVAL_K: int = 8
     INITIAL_RETRIEVAL_K: int = 16
     PROJECT_RETRIEVAL_K: int = 40
+    FALLBACK_PROJECT_RETRIEVAL_K: int = 24
 
     # Paths
     CHROMA_DIR: str = "chroma_db"
     KNOWLEDGE_DIR: str = "knowledge_base"
     COLLECTION_NAME: str = "assem_portfolio_knowledge"
+
+    #Telegram Alerts
+    TELEGRAM_BOT_TOKEN: str | None = None
+    TELEGRAM_CHAT_ID: str | None = None
 
     # Debug
     DEBUG_RETRIEVAL: bool = True
@@ -33,7 +44,6 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
 
-    FALLBACK_PROJECT_RETRIEVAL_K: int = 24
 
 @lru_cache
 def get_settings():

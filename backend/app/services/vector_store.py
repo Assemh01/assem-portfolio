@@ -9,21 +9,46 @@ from app.core.logger import logger
 COLLECTION_NAME = settings.COLLECTION_NAME
 
 
-def get_embedding_function():
-    return embedding_functions.SentenceTransformerEmbeddingFunction(
-        settings.EMBEDDING_MODEL
-    )
+_embedding_function = None
 
+def get_embedding_function():
+    global _embedding_function
+
+    if _embedding_function is None:
+        logger.info("Loading embedding model...")
+        _embedding_function = (
+            embedding_functions.SentenceTransformerEmbeddingFunction(
+                settings.EMBEDDING_MODEL
+            )
+        )
+        logger.info("Embedding model loaded.")
+
+    return _embedding_function
+
+
+_collection = None
 
 def get_collection():
-    client = chromadb.PersistentClient(path=settings.CHROMA_DIR)
+    global _collection
 
-    return client.get_or_create_collection(
-        name=COLLECTION_NAME,
-        embedding_function=get_embedding_function(),
-        metadata={"description": "Assem portfolio chatbot knowledge base"},
-    )
+    if _collection is None:
+        logger.info("Initializing Chroma collection...")
 
+        client = chromadb.PersistentClient(
+            path=settings.CHROMA_DIR
+        )
+
+        _collection = client.get_or_create_collection(
+            name=COLLECTION_NAME,
+            embedding_function=get_embedding_function(),
+            metadata={
+                "description": "Assem portfolio chatbot knowledge base"
+            },
+        )
+
+        logger.info("Chroma collection initialized.")
+
+    return _collection
 
 def rebuild_vector_store() -> None:
     docs = load_knowledge_base()

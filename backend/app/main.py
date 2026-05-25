@@ -60,7 +60,17 @@ app.add_exception_handler(
 
 app.add_middleware(SlowAPIMiddleware)
 
+from app.services.vector_store import get_collection
+from app.services.reranker import reranker
 
+
+@app.on_event("startup")
+def preload_models():
+    get_collection()
+    _ = reranker
+    logger.info("Embedding model, Chroma collection, and reranker preloaded.")
+
+    
 @app.middleware("http")
 async def global_exception_handler(request: Request, call_next):
 

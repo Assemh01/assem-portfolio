@@ -36,10 +36,10 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = "BAAI/bge-base-en-v1.5"
 
     # Retrieval
-    RETRIEVAL_K: int = 8
-    INITIAL_RETRIEVAL_K: int = 16
-    PROJECT_RETRIEVAL_K: int = 40
-    FALLBACK_PROJECT_RETRIEVAL_K: int = 24
+    RETRIEVAL_K: int = 5
+    INITIAL_RETRIEVAL_K: int = 8
+    PROJECT_RETRIEVAL_K: int = 20
+    FALLBACK_PROJECT_RETRIEVAL_K: int = 12
 
     # Paths
     CHROMA_DIR: str = "chroma_db"

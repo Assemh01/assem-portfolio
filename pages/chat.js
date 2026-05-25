@@ -38,9 +38,13 @@ export default function ChatPage() {
   const messagesEndRef = useRef(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const resetChat = () => {
+    controllerRef.current?.abort();
+    controllerRef.current = null;
+
     setMessages([]);
     setMessage("");
     setLoading(false);
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const [exploreOpen, setExploreOpen] = useState(false);
@@ -188,6 +192,7 @@ export default function ChatPage() {
           return updated;
         });
       } finally {
+        controllerRef.current = null;
         setLoading(false);
       }
     };

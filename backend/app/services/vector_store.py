@@ -47,6 +47,9 @@ def get_collection():
         )
 
         logger.info("Chroma collection initialized.")
+        logger.info(
+            f"Collection count: { _collection.count() }"
+        )
 
     return _collection
 

@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     OPENAI_MODEL: str = "gpt-4o-mini"
     LOCAL_MODEL: str = "llama3.1:8b"
     RERANKER_MODEL: str = "BAAI/bge-reranker-base"
-    EMBEDDING_MODEL: str = "BAAI/bge-base-en-v1.5"
+    EMBEDDING_MODEL: str = "BAAI/bge-small-en-v1.5"
 
     # Retrieval
     RETRIEVAL_K: int = 5

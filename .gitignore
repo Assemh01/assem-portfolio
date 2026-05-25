@@ -42,4 +42,4 @@ venv/
 backend/venv/
 
 # Chroma vector DB
-backend/chroma_db/
+# backend/chroma_db/

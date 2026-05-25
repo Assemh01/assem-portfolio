@@ -1,8 +1,16 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
-
+from typing import List
+from pydantic import field_validator
 
 class Settings(BaseSettings):
+    @field_validator("ALLOWED_ORIGINS", mode="before")
+    @classmethod
+    def parse_origins(cls, v):
+        if isinstance(v, str):
+            return [origin.strip() for origin in v.split(",")]
+        return v
+    
     # Environment
     APP_ENV: str = "development"
 
@@ -14,7 +22,9 @@ class Settings(BaseSettings):
     APP_VERSION: str = "0.1.0"
 
     # Frontend
-    FRONTEND_ORIGIN: str = "http://localhost:3000"
+    ALLOWED_ORIGINS: list[str] = [
+    "http://localhost:3000",
+]
 
     # Models
     OPENAI_MODEL: str = "gpt-4o-mini"

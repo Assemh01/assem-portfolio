@@ -60,15 +60,14 @@ app.add_exception_handler(
 
 app.add_middleware(SlowAPIMiddleware)
 
-from app.services.vector_store import get_collection, rebuild_vector_store
+from app.services.vector_store import get_collection
 from app.services.reranker import reranker
 
 @app.on_event("startup")
 def preload_models():
-    rebuild_vector_store()
-    get_collection()
-
-    logger.info("Vector store rebuilt.")
+    collection = get_collection()
+    logger.info(f"Collection count: {collection.count()}")
+    logger.info("Chroma collection ready.")
 
 @app.middleware("http")
 async def global_exception_handler(request: Request, call_next):

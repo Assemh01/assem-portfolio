@@ -1,5 +1,4 @@
 from typing import Any, Dict, List
-from app.services.reranker import rerank_chunks
 from app.services.vector_store import retrieve_relevant_chunks
 import time
 from app.core.config import settings
@@ -140,7 +139,7 @@ projects
 
     rerank_start = time.perf_counter()
 
-    chunks = rerank_chunks(query, chunks, top_k=k)
+    chunks = chunks[:k]
 
     rerank_time = time.perf_counter() - rerank_start
 

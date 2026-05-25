@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     # API Keys
     OPENAI_API_KEY: str
 
+    #Enable Reranker
+    ENABLE_RERANKING=False
+    
     # App
     APP_NAME: str = "Assem Portfolio API"
     APP_VERSION: str = "0.1.0"

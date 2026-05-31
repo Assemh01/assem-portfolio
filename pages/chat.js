@@ -293,7 +293,7 @@ export default function ChatPage() {
 
           <div className="relative flex min-h-[calc(100dvh-96px)] sm:min-h-[calc(100dvh-120px)] flex-col">
             <div
-              className={`flex-1 flex flex-col items-center px-4 pb-32 ${
+              className={`flex-1 flex flex-col items-center px-2 sm:px-4 ${
                 hasStartedChat
                   ? "justify-start pt-6 sm:pt-10"
                   : "justify-center text-center"
@@ -360,7 +360,7 @@ export default function ChatPage() {
               </>
               )}
               {messages.length > 0 && (
-                <div className="w-full max-w-4xl mx-auto mt-2 space-y-3 pb-40 sm:pb-28">
+                <div className="w-full max-w-4xl mx-auto mt-2 space-y-3 pb-28 sm:pb-28">
                   {messages.map((msg, index) => (
                     <div
                       key={index}

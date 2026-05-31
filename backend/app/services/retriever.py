@@ -24,19 +24,11 @@ def format_context_blocks(chunks: List[Dict[str, Any]]) -> str:
     context_blocks = []
 
     for chunk in chunks:
-        metadata = chunk["metadata"]
-
         context_blocks.append(
-            f"""
-Source: {metadata.get("source_file")}
-Category: {metadata.get("category")}
-Section: {metadata.get("section_title")}
-
-{chunk["text"]}
-""".strip()
+            chunk["text"].strip()
         )
 
-    return "\n\n---\n\n".join(context_blocks)
+    return "\n\n".join(context_blocks)
 
 def is_broad_project_query(query: str) -> bool:
     q = query.lower()

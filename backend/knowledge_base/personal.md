@@ -1,27 +1,30 @@
 ---
+
 category: personal
 priority: critical
 visibility: recruiter_safe
-last_updated: 2026-05-03
----
+last_updated: 2026-05-30
+------------------------
 
 # Personal & Professional Context — Assem Alhomsi
 
-## Basic Information
+# Basic Information
 
 **Full Name:** Assem Alhomsi
 
 **Location:** Dearborn Heights, Michigan, United States
 
-**Current Status:** Open to AI / ML / Generative AI / Backend Engineering opportunities
+**Current Status:** Open to AI, Generative AI, backend engineering, and applied machine learning opportunities.
 
-**Work Arrangement Preferences:**
-- Onsite in Michigan
-- Hybrid
-- Remote
+**Work Preferences:**
+
+* onsite in Michigan
+* hybrid
+* remote
+
 ---
 
-## Work Authorization
+# Work Authorization
 
 Assem is fully authorized to work in the United States.
 
@@ -29,162 +32,161 @@ He is a U.S. lawful permanent resident (Green Card holder).
 
 He does not require:
 
-- visa sponsorship
-- H-1B sponsorship
-- H-1B transfer
-- immigration sponsorship now
-- immigration sponsorship in the future
+* visa sponsorship
+* H-1B sponsorship
+* immigration sponsorship now
+* immigration sponsorship in the future
 
-He can work for any U.S. employer without work authorization constraints.
+He can work for any U.S. employer without work authorization restrictions.
 
 ---
 
-## Professional Identity
+# Professional Identity
 
-Assem is a production-oriented AI Engineer focused on building practical AI systems end-to-end.
+Assem is an AI Engineer focused on building practical AI systems that combine retrieval, backend infrastructure, orchestration workflows, and evaluation-aware design.
 
-He is strongest at the intersection of:
+His work has primarily centered around:
 
-- Generative AI
-- Retrieval-Augmented Generation (RAG)
-- backend engineering
-- orchestration systems
-- model deployment
-- evaluation pipelines
-- workflow automation
-- AI infrastructure
+* Retrieval-Augmented Generation (RAG)
+* backend AI systems
+* retrieval infrastructure
+* orchestration workflows
+* model deployment
+* evaluation pipelines
+* AI automation systems
+* enterprise AI applications
 
-His engineering mindset is systems-first:
+He naturally approaches AI products as operational systems rather than isolated model interactions.
+
+A recurring theme in his work is improving how information flows through systems:
 
 ingestion → preprocessing → embeddings → retrieval → orchestration → generation → evaluation → deployment
 
-He naturally thinks in complete systems rather than isolated components.
+---
+
+# Career Background
+
+Before relocating permanently to the United States in 2025, Assem built hands-on AI engineering experience through production-oriented work at boxMind.ai.
+
+The work involved:
+
+* retrieval systems
+* backend APIs
+* orchestration workflows
+* vector databases
+* embedding pipelines
+* enterprise knowledge assistants
+* educational AI systems
+* natural-language SQL systems
+* OCR workflows
+* speech AI prototypes
+* deployment infrastructure
+* evaluation systems
+
+This became the foundation of his practical AI systems engineering experience.
 
 ---
 
-## Career Background
-
-Before relocating permanently to the United States in July 2025, Assem built meaningful hands-on AI engineering experience internationally.
-
-His core engineering foundation was built through production work at boxMind.ai, where he worked on:
-
-- production RAG systems
-- LLM deployment
-- LangChain systems
-- LangGraph orchestration
-- Milvus vector databases
-- embedding pipelines
-- enterprise knowledge assistants
-- educational AI systems
-- natural-language-to-SQL systems
-- OCR pipelines
-- speech AI proof-of-concepts
-- AWS deployments
-- Dockerized backend services
-- evaluation pipelines
-
-This represents the foundation of his production AI engineering experience.
-
----
-
-## Current Work
+# Current Work
 
 Assem currently works as an **AI Curator at Apple via Inspyr Solutions**.
 
-His work involves:
+The role focuses on large-scale AI evaluation and quality analysis.
 
-- response evaluation
-- reasoning quality assessment
-- hallucination identification
-- policy and safety review
-- structured evaluation rubrics
-- annotation quality standards
-- quality benchmarking
-- large-scale data quality workflows
+Responsibilities include:
 
-This strengthened his understanding of:
+* reasoning quality assessment
+* hallucination identification
+* response evaluation
+* policy and safety review
+* annotation consistency
+* structured evaluation workflows
+* output calibration
+* quality benchmarking
 
-- LLM behavior
-- model failure modes
-- alignment considerations
-- AI safety standards
-- reasoning weaknesses
-- production quality expectations
-- evaluation rigor
+The work strengthened his understanding of:
 
-This complements his engineering background and improves how he designs systems for reliability and quality.
+* LLM behavior
+* reasoning weaknesses
+* model failure modes
+* alignment considerations
+* evaluation rigor
+* production quality expectations
 
----
-
-## How Assem Works
-
-Assem’s working style is:
-
-- ownership-driven
-- architecture-first
-- iterative
-- quality-focused
-- practical
-- highly adaptable
-- detail-oriented
-- product-aware
-- execution-minded
-- systems-oriented
-- collaborative
-- independent when needed
-- direct and clear in communication
-
-He prefers understanding the full system—not just his isolated component.
-
-He enjoys identifying bottlenecks, refining systems, and improving quality through iteration.
+This experience complements his engineering background by improving how he approaches reliability, evaluation, and quality-aware system design.
 
 ---
 
-## Professional Strengths
+# Working Style
 
-Strongest traits include:
+Assem tends to work in an:
 
-- production-minded engineering
-- end-to-end ownership
-- backend + AI crossover
-- strong RAG intuition
-- orchestration thinking
-- evaluation awareness
-- infrastructure understanding
-- startup execution speed
-- fast learning
-- thoughtful technical decisions
-- strong written communication
-- technical depth with business awareness
+* architecture-first
+* iterative
+* quality-focused
+* practical
+* detail-oriented
+* execution-minded
+
+way.
+
+He prefers understanding how the full system behaves operationally rather than focusing only on isolated components.
+
+He enjoys:
+
+* refining workflows
+* improving retrieval quality
+* debugging system behavior
+* reducing operational friction
+* improving maintainability
+* iterating toward more reliable systems
+
+He communicates directly, values technical clarity, and adapts quickly in fast-moving environments.
 
 ---
 
-## Recruiter-Relevant Summary
+# Professional Strengths
 
-Best described as:
+Recurring strengths across his work include:
 
-**Mid-level AI Engineer with meaningful production experience building LLM systems, RAG pipelines, orchestration workflows, and backend AI infrastructure.**
+* retrieval systems intuition
+* backend engineering capability
+* infrastructure awareness
+* orchestration thinking
+* evaluation mindset
+* strong ownership
+* practical execution
+* adaptability
+* iterative improvement
+* product-aware engineering
+* balancing experimentation with maintainability
 
-Best fit roles:
+---
 
-- AI Engineer
-- Generative AI Engineer
-- Applied AI Engineer
-- Machine Learning Engineer
-- LLM Engineer
-- RAG Engineer
-- AI Backend Engineer
-- ML Platform Engineer
+# Recruiter-Relevant Summary
 
-Strong interest in:
+Best concise description:
 
-- enterprise AI
-- healthcare AI
-- fintech AI
-- developer tooling
-- education technology
-- infrastructure platforms
-- workflow automation
-- applied AI products
+**Mid-level AI Engineer with hands-on experience building retrieval systems, backend AI infrastructure, orchestration workflows, and production-oriented generative AI applications.**
 
-**Preferred work arrangement:** willing to work onsite in Michigan, hybrid, or remote.
+Best fit roles include:
+
+* AI Engineer
+* Generative AI Engineer
+* Applied AI Engineer
+* Machine Learning Engineer
+* AI Backend Engineer
+* RAG Engineer
+* LLM Engineer
+* ML Platform Engineer
+
+Strong interests include:
+
+* enterprise AI
+* developer tooling
+* workflow automation
+* infrastructure platforms
+* healthcare AI
+* educational AI
+* applied AI products
+* operational AI systems

@@ -1,485 +1,343 @@
 ---
+
 category: projects
 priority: critical
 visibility: recruiter_safe
-last_updated: 2026-05-10
----
+last_updated: 2026-05-30
+------------------------
 
-# Named Project Summary
+# Project Overview
 
-Primary projects:
+Assem Alhomsi has worked on applied AI systems across:
 
-- boxMind Flagship Platform
-- boxMind Academy
-- Financial Intelligence System
-- Enterprise Knowledge Assistants
-- Speech AI Systems
-- Document OCR / Extraction Support
+* enterprise retrieval
+* educational AI
+* conversational business intelligence
+* workflow automation
+* speech systems
+* OCR-assisted document workflows
+* backend AI infrastructure
 
----
+Across projects, recurring areas of work included:
 
-# Overview
+* retrieval systems
+* backend APIs
+* orchestration workflows
+* evaluation systems
+* ingestion pipelines
+* deployment infrastructure
+* automation tooling
+* grounded AI workflows
 
-Assem Alhomsi has built applied AI systems across education, enterprise knowledge retrieval, finance, speech systems, healthcare, legal technology, and computer vision.
-
-His work consistently focused on practical AI engineering rather than isolated model experimentation. Across projects, he worked on retrieval systems, backend APIs, orchestration pipelines, evaluation workflows, deployment infrastructure, and production-oriented AI applications.
-
-Recurring themes across his projects include:
-
-- production-ready AI systems
-- retrieval engineering
-- RAG pipelines
-- backend-first architecture
-- orchestration workflows
-- grounding and hallucination reduction
-- AI infrastructure and deployment
-- automation pipelines
-- evaluation-driven iteration
-- practical business applications of AI
-
-His engineering style emphasizes maintainability, scalability, and building AI systems that integrate into real operational workflows.
+The projects emphasized operational usefulness, maintainability, retrieval quality, and practical business value rather than isolated model experimentation.
 
 ---
 
-# boxMind Flagship Platform — Complete Summary
+# Primary Projects
 
-At boxMind, Assem worked on major parts of the company’s flagship production Generative AI platform used across internal and customer-facing AI applications.
+Main project areas include:
 
-His work spanned retrieval systems, model infrastructure, backend APIs, orchestration pipelines, evaluation systems, and deployment workflows.
-
-One major area involved multi-model AI infrastructure. He worked on systems that allowed users to choose between multiple providers and models such as OpenAI, Gemini, LLaMA, Falcon, Qwen, and other hosted or self-hosted LLMs through a unified interface. This included routing logic, inference APIs, model-serving workflows, and infrastructure supporting both hosted and on-prem deployments.
-
-He also built and improved production retrieval systems involving ingestion pipelines, preprocessing, chunking strategies, metadata enrichment, embeddings, vector indexing, semantic retrieval, reranking, and grounding workflows. His work focused heavily on improving retrieval quality, reducing hallucinations, and increasing answer consistency.
-
-The platform also included evaluation and automation systems. He worked with tools such as RAGAS and LangSmith to benchmark retrieval quality, compare prompts and configurations, analyze hallucinations, and iterate on system performance. He also built Airflow-based ingestion and embedding pipelines that automated indexing, preprocessing, and evaluation workflows.
-
-Technologies involved across this work included Python, Flask, Docker, Linux, NVIDIA A100 infrastructure, vLLM, Hugging Face, Milvus, Chroma, FAISS, LangChain, LangGraph, Airflow, and OpenAI APIs.
-
-This work combined backend engineering, infrastructure, retrieval engineering, orchestration, and production AI systems design.
+* boxMind Flagship Platform
+* boxMind Academy
+* Financial Intelligence System
+* Enterprise Knowledge Assistants
+* Speech AI Systems
+* Document OCR / Extraction Workflows
 
 ---
 
-# boxMind Flagship Platform — Model Infrastructure
+# boxMind Flagship Platform
 
-Worked on infrastructure supporting both hosted and self-hosted language models.
+Worked on major parts of boxMind’s production Generative AI platform used across internal and customer-facing AI applications.
 
-Contributions included:
+The work spanned:
 
-- multi-model selection workflows
-- routing between providers
-- inference APIs
-- model-serving pipelines
-- self-hosted deployment support
-- hosted API integrations
-- latency optimization
-- throughput optimization
-- deployment reliability improvements
-- infrastructure orchestration
-
-Supported model ecosystems including:
-
-- OpenAI
-- Gemini
-- LLaMA
-- Falcon
-- Qwen
-- other hosted and open-source providers
-
-Stack:
-
-- NVIDIA A100
-- vLLM
-- Hugging Face
-- Python
-- Flask
-- Docker
-- Linux
+* retrieval systems
+* backend infrastructure
+* orchestration workflows
+* model-serving systems
+* evaluation tooling
+* ingestion pipelines
+* automation workflows
+* deployment infrastructure
 
 ---
 
-# boxMind Flagship Platform — Retrieval Systems
+## Multi-Model AI Infrastructure
 
-Built and improved production retrieval systems involving:
+One major focus area involved infrastructure supporting both hosted and self-hosted language models.
 
-- ingestion pipelines
-- preprocessing
-- chunking strategies
-- metadata enrichment
-- embeddings
-- vector indexing
-- semantic retrieval
-- reranking
-- grounding workflows
-- retrieval optimization
-- hallucination reduction
-- answer quality iteration
+Worked on systems allowing users to interact with multiple providers and model ecosystems through unified workflows.
 
-Worked with vector systems including:
+Supported ecosystems included:
 
-- Milvus
-- Chroma
-- FAISS
-- Pinecone familiarity
+* OpenAI
+* Gemini
+* LLaMA
+* Falcon
+* Qwen
+* hosted and self-hosted open-source models
 
-Technical themes:
+Responsibilities included:
 
-- retrieval engineering
-- grounding
-- answer quality improvement
-- semantic search optimization
-- enterprise knowledge retrieval
-- scalable RAG systems
+* inference APIs
+* provider routing
+* hosted/self-hosted orchestration
+* model-serving workflows
+* deployment reliability
+* throughput optimization
+* latency improvements
+* operational infrastructure
 
----
+Infrastructure and tooling included:
 
-# boxMind Flagship Platform — Evaluation Systems
-
-Built evaluation systems focused on retrieval quality and grounded generation.
-
-Worked on:
-
-- retrieval benchmarking
-- answer scoring
-- hallucination analysis
-- groundedness evaluation
-- prompt comparison
-- hyperparameter experimentation
-- iterative quality improvement
-- evaluation automation
-
-Tools:
-
-- RAGAS
-- LangSmith
-- internal benchmarking systems
+* NVIDIA A100
+* vLLM
+* Hugging Face
+* Docker
+* Linux
+* Python backend services
 
 ---
 
-# boxMind Flagship Platform — Automation
+## Retrieval Systems & RAG Infrastructure
 
-Built automation workflows involving:
+Built and improved retrieval systems involving:
 
-- Airflow ingestion pipelines
-- embedding refresh systems
-- scheduled indexing jobs
-- preprocessing workflows
-- evaluation pipelines
-- ingestion orchestration
-- automated retrieval workflows
+* ingestion pipelines
+* preprocessing workflows
+* chunking strategies
+* metadata enrichment
+* embedding pipelines
+* vector indexing
+* semantic retrieval
+* retrieval optimization
+* grounding workflows
+* hallucination reduction
+* answer quality iteration
 
-This reduced manual operational overhead and improved consistency across retrieval systems.
+Vector systems included:
 
----
+* Milvus
+* Chroma
+* FAISS
 
-# boxMind Flagship Platform — Outcome
+Worked with both OpenAI embeddings and open-source embedding models depending on deployment and infrastructure requirements.
 
-Improved:
-
-- retrieval quality
-- factual grounding
-- answer consistency
-- operational efficiency
-- ingestion automation
-- evaluation workflows
-- production reliability
+A major focus of the work was improving retrieval quality and grounding consistency across enterprise AI systems.
 
 ---
 
-# boxMind Academy — Complete Summary
+## Evaluation & Automation Systems
+
+Worked on evaluation systems focused on grounded generation and retrieval quality.
+
+This included:
+
+* retrieval benchmarking
+* answer quality scoring
+* groundedness analysis
+* hallucination evaluation
+* prompt comparison
+* configuration experimentation
+* iterative optimization workflows
+
+Tools included:
+
+* RAGAS
+* LangSmith
+* internal benchmarking tooling
+
+Also worked on automation workflows involving:
+
+* Airflow ingestion pipelines
+* embedding refresh workflows
+* scheduled indexing systems
+* preprocessing automation
+* evaluation pipelines
+* retrieval workflow automation
+
+This improved operational consistency and reduced manual maintenance overhead.
+
+---
+
+# boxMind Academy
 
 boxMind Academy was an AI-powered educational platform focused on robotics and AI learning for K–12 students.
 
-The goal was to create a system that behaved more like an intelligent tutor than a static learning platform. Instead of simply presenting lessons, the platform supported contextual conversations, guided reasoning, adaptive explanations, and AI-assisted learning workflows.
+The platform aimed to behave more like an intelligent tutor than a static course platform.
 
-Assem worked across both educational product design and backend AI implementation. He helped design robotics curriculum for students across multiple grade levels while also building the technical systems powering retrieval, tutoring, and conversational learning features.
+Instead of simply presenting lessons, the system supported:
 
-A major part of the platform involved lesson-scoped retrieval systems. He implemented contextual RAG pipelines that restricted retrieval to lesson-specific material so students received grounded responses tied directly to what they were learning. He also built guided tutoring workflows that explained reasoning step-by-step rather than giving direct answers immediately.
-
-The platform included conversational quiz assistants capable of analyzing mistakes, guiding students toward correct reasoning, and generating adaptive educational explanations.
-
-The work combined backend engineering, retrieval systems, AI UX design, educational reasoning workflows, and conversational AI.
-
-Technologies involved included Python, Flask, MySQL, OpenAI APIs, LangChain, embeddings, RAG pipelines, Docker, and backend APIs.
+* contextual conversations
+* guided reasoning
+* adaptive explanations
+* conversational tutoring
+* AI-assisted learning workflows
 
 ---
 
-# boxMind Academy — Problem
+## Educational Retrieval & Tutoring Systems
 
-Traditional educational systems often provide static content, limited personalization, and little interactive reasoning support.
+Worked across both educational design and backend AI implementation.
 
-The goal was to build a system that behaves more like an intelligent tutor than a static course platform.
+Responsibilities included:
 
----
+* lesson-scoped retrieval systems
+* contextual RAG pipelines
+* conversational tutoring workflows
+* adaptive explanation systems
+* guided reasoning interactions
+* conversational quiz assistants
+* backend lesson architecture
+* educational workflow design
 
-# boxMind Academy — What Assem Built
-
-Worked across both product design and technical implementation.
-
-Contributions included:
-
-- robotics curriculum design for K–12 students
-- backend lesson architecture
-- lesson-scoped retrieval systems
-- contextual RAG pipelines
-- conversational tutoring workflows
-- guided reasoning systems
-- adaptive explanation workflows
-- quiz assistants
-- AI-supported educational interactions
-- backend APIs
-- deployment support
+A major focus was grounding retrieval to lesson-specific content so student interactions stayed contextually accurate and educationally relevant.
 
 ---
 
-# boxMind Academy — Technical Contributions
+## Educational AI Infrastructure
 
-Stack:
+Worked on backend and orchestration systems supporting educational workflows.
 
-- Python
-- Flask
-- MySQL
-- OpenAI API
-- LangChain
-- embeddings
-- RAG pipelines
-- retrieval systems
-- Docker
-- backend APIs
+Technologies included:
 
-Technical themes:
+* Python
+* Flask
+* MySQL
+* OpenAI APIs
+* embeddings
+* retrieval systems
+* Docker
+* backend APIs
 
-- contextual retrieval
-- scoped memory systems
-- prompt engineering for pedagogy
-- backend orchestration
-- AI UX design
-- educational AI workflows
-- conversational tutoring systems
+The work combined retrieval engineering, conversational AI, educational UX thinking, and backend infrastructure.
 
 ---
 
-# boxMind Academy — Outcome
+# Financial Intelligence System
 
-Enabled:
+Built conversational workflows that translated natural language into database-aware SQL interactions.
 
-- personalized tutoring
-- guided reasoning
-- AI-assisted learning
-- scalable educational workflows
-- adaptive student support
-- interactive educational experiences
+The goal was to make financial and operational data systems more accessible to non-technical users.
+
+Instead of manually writing SQL queries, users could ask business questions conversationally and receive structured analytical responses.
 
 ---
 
-# Financial Intelligence System — Complete Summary
+## Conversational SQL Workflows
 
-This project focused on building a natural-language interface for querying financial transaction data.
+Worked on systems involving:
 
-The goal was to reduce the dependency on technical analysts who understood database schemas, SQL syntax, and financial data structures. Instead of manually writing SQL queries, users could ask business questions conversationally and receive structured responses generated through AI workflows.
+* schema grounding
+* SQL generation pipelines
+* reasoning workflows
+* validation systems
+* query safety workflows
+* conversational follow-up handling
+* backend integrations
+* orchestration logic
 
-Assem worked on multiple parts of the system, including schema grounding, prompt engineering, SQL generation pipelines, validation systems, reasoning chains, backend integrations, and conversational follow-up handling.
+The architecture emphasized multi-step reasoning workflows capable of maintaining schema awareness and business logic constraints.
 
-The architecture involved multi-step reasoning workflows that translated user intent into database-aware SQL generation while maintaining awareness of schema relationships and business logic. He also worked on validation and query safety systems to reduce incorrect or unsafe SQL generation.
-
-The project emphasized practical business intelligence workflows rather than generic chatbot interaction. Users could ask analytical questions conversationally, receive generated SQL queries, and continue asking follow-up questions within the same context.
-
-Technologies involved included LangGraph, LangChain, Python, SQL systems, orchestration workflows, and backend integrations.
-
-This work combined retrieval-aware prompting, workflow orchestration, backend engineering, and conversational AI system design.
-
----
-
-# Financial Intelligence System — Problem
-
-Financial systems often require technical analysts who understand schemas, SQL, and business logic.
-
-This creates operational bottlenecks and limits accessibility of internal data systems.
-
-The goal was to build conversational business intelligence workflows using natural language.
+The project combined backend engineering, orchestration systems, conversational AI, and practical business intelligence workflows.
 
 ---
 
-# Financial Intelligence System — What Assem Built
+# Enterprise Knowledge Assistants
+
+Built enterprise retrieval systems focused on improving access to operational knowledge across healthcare, legal, and enterprise environments.
+
+The systems emphasized grounded retrieval and operational usefulness rather than generic chatbot interaction.
+
+---
+
+## Enterprise Retrieval Infrastructure
 
 Worked on:
 
-- schema grounding
-- prompt engineering
-- SQL generation workflows
-- multi-step reasoning chains
-- validation pipelines
-- query safety checks
-- conversational follow-up handling
-- backend integrations
-- orchestration workflows
-- agent-based reasoning systems
-
-Stack:
-
-- LangGraph
-- LangChain
-- Python
-- SQL
-
----
-
-# Financial Intelligence System — Engineering Value
-
-Improved:
-
-- accessibility of data analysis
-- conversational BI workflows
-- operational efficiency
-- query turnaround speed
-- usability for non-technical users
-
----
-
-# Enterprise Knowledge Assistants — Complete Summary
-
-Built enterprise retrieval systems designed to improve internal knowledge access across healthcare, legal, and operational environments.
-
-These systems focused on grounded retrieval rather than generic chatbot interaction. The goal was to help organizations retrieve policies, regulations, internal documentation, and operational knowledge through conversational AI interfaces.
-
-Assem worked on ingestion systems, preprocessing pipelines, chunking strategies, embeddings, vector retrieval systems, backend APIs, deployment workflows, and grounding prompts.
-
-The projects emphasized retrieval quality, contextual accuracy, and practical operational usefulness. Work included improving semantic retrieval, designing maintainable backend systems, and building scalable ingestion pipelines for enterprise document workflows.
-
-Technologies involved included Python, vector databases, embeddings, LangChain, OpenAI APIs, Docker, AWS infrastructure, and retrieval pipelines.
-
----
-
-# Enterprise Knowledge Assistants — Use Cases
-
-Built retrieval systems for:
-
-- hospital internal regulations
-- legal knowledge retrieval
-- enterprise policies
-- operational documentation
-- internal Q&A systems
-
----
-
-# Enterprise Knowledge Assistants — Contributions
-
-Worked on:
-
-- ingestion design
-- preprocessing systems
-- chunking strategies
-- embeddings
-- vector storage
-- semantic retrieval
-- grounding workflows
-- backend APIs
-- deployment pipelines
-
-Stack:
-
-- Python
-- vector databases
-- embeddings
-- LangChain
-- OpenAI API
-- Docker
-- AWS
-
----
-
-# Enterprise Knowledge Assistants — Outcome
-
-Improved:
-
-- internal knowledge access
-- policy lookup speed
-- operational efficiency
-- organizational knowledge reuse
-- retrieval accuracy
-
----
-
-# Speech AI Systems — Voice Automation
-
-Built applied voice systems involving:
-
-- Speech-to-Text
-- Text-to-Speech
-- conversational voice interfaces
-- workflow automation
+* ingestion systems
+* preprocessing pipelines
+* chunking workflows
+* embedding pipelines
+* vector retrieval systems
+* semantic search
+* backend APIs
+* deployment workflows
+* grounding prompts
 
 Use cases included:
 
-## Fast Food Ordering
+* hospital regulation retrieval
+* legal knowledge retrieval
+* enterprise policy systems
+* operational documentation search
+* internal knowledge assistants
 
-- conversational ordering systems
-- intent recognition
-- workflow routing
-- ordering automation
-
-## Brokerage / Customer Service
-
-- transcription systems
-- spoken response generation
-- workflow acceleration
-- support augmentation
-
-Technical themes:
-
-- conversational AI
-- speech pipelines
-- workflow orchestration
-- real-time interaction systems
+The work focused heavily on retrieval quality, contextual accuracy, and scalable backend architecture.
 
 ---
 
-# Document OCR / Extraction Support — Complete Summary
+# Speech AI Systems
 
-Worked on OCR-related tooling used in document processing and retrieval-support workflows.
+Worked on applied voice systems involving:
 
-The work focused on extracting structured or searchable text from documents in order to improve downstream retrieval systems, document understanding, preprocessing pipelines, and operational workflows.
+* Speech-to-Text
+* Text-to-Speech
+* conversational voice workflows
+* AI-assisted automation systems
 
-Contributions included OCR extraction systems, preprocessing workflows, document cleaning pipelines, extraction quality experimentation, and text normalization workflows.
+Use cases included:
 
-This work was separate from the computer-vision license plate recognition internship work and instead focused on document-oriented extraction and retrieval support.
+* conversational food ordering systems
+* customer support augmentation
+* transcription workflows
+* spoken-response generation
+* workflow acceleration
 
-Technologies involved included EasyOCR, PaddleOCR, Python, OpenCV, and preprocessing pipelines.
-
----
-
-# Document OCR / Extraction Support — What Assem Built
-
-Worked on:
-
-- OCR extraction pipelines
-- preprocessing systems
-- text extraction workflows
-- document cleaning pipelines
-- extraction quality experimentation
-- document understanding support workflows
-
-Stack:
-
-- EasyOCR
-- PaddleOCR
-- Python
-- OpenCV
+The work combined conversational AI, backend workflows, and real-time interaction systems.
 
 ---
 
-# Cross-Project Strengths
+# Document OCR & Extraction Workflows
 
-Recurring strengths visible across projects:
+Worked on OCR-assisted document workflows focused on improving downstream retrieval and document understanding systems.
 
-- practical systems thinking
-- end-to-end ownership
-- backend engineering depth
-- retrieval engineering
-- orchestration mindset
-- production AI systems thinking
-- product awareness
-- iterative refinement
-- deployment awareness
-- evaluation-driven engineering
-- scalable backend architecture
-- fast execution in startup environments
+This work was separate from earlier license plate recognition internship work and instead focused on document-oriented extraction workflows.
+
+Responsibilities included:
+
+* OCR extraction pipelines
+* preprocessing systems
+* text normalization workflows
+* document cleaning pipelines
+* extraction quality experimentation
+* retrieval-support preprocessing
+
+Technologies included:
+
+* EasyOCR
+* PaddleOCR
+* Python
+* OpenCV
+
+The goal was improving document accessibility, retrieval quality, and downstream AI workflow performance.
+
+---
+
+# Recurring Engineering Themes
+
+Recurring strengths visible across projects include:
+
+* retrieval systems intuition
+* backend engineering capability
+* orchestration awareness
+* infrastructure thinking
+* evaluation-driven iteration
+* deployment familiarity
+* operational AI system design
+* practical execution
+* strong ownership
+* maintainable architecture
+* product-aware engineering
+* iterative system improvement

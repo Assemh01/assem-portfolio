@@ -6,26 +6,31 @@ import data from "../data/portfolio.json";
 import Image from "next/image";
 import { ArrowUp, PanelLeft, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+
 
 const CodeBlock = {
-  code({ inline, className, children, ...props }) {
-    const match = /language-(\w+)/.exec(className || "");
-
-    return !inline && match ? (
-      <SyntaxHighlighter
-        style={dracula}
-        language={match[1]}
-        PreTag="div"
+  code({ inline, children, ...props }) {
+    return inline ? (
+      <code
+        className="
+          rounded-md bg-black/10 dark:bg-white/10
+          px-1.5 py-0.5
+          font-mono text-[0.95em]
+        "
         {...props}
       >
-        {String(children).replace(/\n$/, "")}
-      </SyntaxHighlighter>
-    ) : (
-      <code className={className} {...props}>
         {children}
       </code>
+    ) : (
+      <pre
+        className="
+          my-3 overflow-x-auto rounded-xl
+          bg-black/10 dark:bg-white/10
+          p-4 font-mono text-sm
+        "
+      >
+        <code {...props}>{String(children).replace(/\n$/, "")}</code>
+      </pre>
     );
   },
 };
@@ -202,21 +207,21 @@ export default function ChatPage() {
       setLoading(false);
     };
   return (
-    <div className={`relative min-h-screen ${data.showCursor ? "cursor-none" : ""}`}>
+    <div className={`relative min-h-[100dvh] touch-manipulation ${data.showCursor ? "cursor-none" : ""}`}>
       <Head>
         <title>Chat with Assem</title>
       </Head>
 
-      {data.showCursor && <Cursor />}
+      {false && data.showCursor && <Cursor />}
 
-      <div className="relative min-h-screen overflow-hidden bg-white text-black dark:bg-black dark:text-white">
+      <div className="relative min-h-[100dvh] overflow-hidden bg-white text-black dark:bg-black dark:text-white">
         <div className="gradient-circle" />
         <div className="pointer-events-none absolute top-24 right-0 h-[520px] w-[720px] rounded-full bg-purple-500/20 blur-[150px]" />
         <div className="pointer-events-none absolute bottom-0 left-1/4 h-[520px] w-[720px] rounded-full bg-indigo-500/10 blur-[150px]" />
 
-        <div className="h-32 tablet:h-40" />
+        <div className="h-20 sm:h-32 tablet:h-40" />
 
-        <div className="mx-auto max-w-screen-2xl px-4 laptop:px-8 -mt-28 tablet:-mt-36">
+        <div className="mx-auto w-full max-w-screen-2xl px-3 sm:px-4 laptop:px-8 -mt-20 sm:-mt-28 tablet:-mt-36">
         <div className="relative flex items-center justify-between">
           <Header />
         </div>
@@ -286,11 +291,11 @@ export default function ChatPage() {
           </div>
         )}
 
-          <div className="relative flex min-h-[calc(100vh-120px)] flex-col">
+          <div className="relative flex min-h-[calc(100dvh-96px)] sm:min-h-[calc(100dvh-120px)] flex-col">
             <div
               className={`flex-1 flex flex-col items-center px-4 pb-32 ${
                 hasStartedChat
-                  ? "justify-start pt-10"
+                  ? "justify-start pt-6 sm:pt-10"
                   : "justify-center text-center"
               }`}
             >
@@ -355,18 +360,18 @@ export default function ChatPage() {
               </>
               )}
               {messages.length > 0 && (
-                <div className="w-full max-w-4xl mx-auto mt-2 space-y-3 pb-28">
+                <div className="w-full max-w-4xl mx-auto mt-2 space-y-3 pb-40 sm:pb-28">
                   {messages.map((msg, index) => (
                     <div
                       key={index}
                       className={`flex ${
                         msg.role === "user"
-                          ? "justify-end pr-8"
-                          : "justify-start pl-8"
+                          ? "justify-end sm:pr-8"
+                          : "justify-start sm:pl-8"
                       }`}
                     >
                       {msg.role === "assistant" ? (
-                        <div className="flex items-end gap-3 max-w-[68%]">
+                        <div className="flex items-end gap-3 max-w-[88%] sm:max-w-[68%]">
                           <div
                             className={`shrink-0 mt-1 ${
                               loading && index === messages.length - 1
@@ -386,7 +391,7 @@ export default function ChatPage() {
                           {msg.content && (
                             <div
                               className="
-                                rounded-2xl px-5 py-3 text-sm tablet:text-base leading-relaxed
+                                rounded-2xl px-4 sm:px-5 py-3 text-sm tablet:text-base leading-relaxed
                                 bg-white/95 text-gray-900
                                 border-2 border-purple-200/80
                                 shadow-[0_12px_34px_rgba(88,28,135,0.10)]
@@ -410,7 +415,23 @@ export default function ChatPage() {
                                   dark:prose-invert
                                 "
                               >
-                                <ReactMarkdown components={CodeBlock}>
+                                <ReactMarkdown
+                                  components={{
+                                    ...CodeBlock,
+                                    a: ({ node, ...props }) => (
+                                      <a
+                                        {...props}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="
+                                          text-purple-600 hover:text-purple-700 hover:underline
+                                          dark:text-purple-400 dark:hover:text-purple-300
+                                          transition-colors
+                                        "
+                                      />
+                                    ),
+                                  }}
+                                >
                                   {msg.content}
                                 </ReactMarkdown>
                               </div>
@@ -418,7 +439,7 @@ export default function ChatPage() {
                           )}
                         </div>
                       ) : (
-                        <div className="flex items-end gap-2 max-w-[72%] flex-row-reverse">
+                        <div className="flex items-end gap-2 max-w-[82%] sm:max-w-[72%] flex-row-reverse">
                           <div
                             className="
                               h-[38px] w-[38px]
@@ -493,8 +514,8 @@ export default function ChatPage() {
             <div
               className="
                 fixed bottom-0 left-1/2 -translate-x-1/2
-                z-20 w-full max-w-4xl px-4
-                pb-6 pt-10
+                z-20 w-full max-w-4xl px-3 sm:px-4
+                pb-4 sm:pb-6 pt-8 sm:pt-10
               "
             >
               <div
@@ -514,7 +535,8 @@ export default function ChatPage() {
                   placeholder="Ask me anything about Assem..."
                   className="
                     flex-1 rounded-2xl
-                    px-6 py-4
+                    text-[16px]
+                    px-4 sm:px-6 py-3 sm:py-4
                     backdrop-blur-md
                     outline-none
                     transition-all duration-300
@@ -543,7 +565,7 @@ export default function ChatPage() {
   type="button"
   onClick={loading ? stopGeneration : () => sendMessage()}
   className={`
-    h-[56px] w-[56px]
+    h-[50px] w-[50px] sm:h-[56px] sm:w-[56px]
     shrink-0 rounded-full
     flex items-center justify-center
     transition-all duration-300
@@ -599,7 +621,7 @@ export default function ChatPage() {
       <aside
         className={`
           fixed left-0 top-0 z-50
-          h-screen w-[360px]
+          h-screen w-[85vw] max-w-[360px]
 
           bg-gradient-to-b
           from-white

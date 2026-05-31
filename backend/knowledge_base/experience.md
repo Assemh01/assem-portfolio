@@ -1,279 +1,278 @@
 ---
+
 category: experience
 priority: critical
 visibility: recruiter_safe
-last_updated: 2026-05-03
----
+last_updated: 2026-05-30
+------------------------
 
 # Professional Experience — Assem Alhomsi
 
 ## Overview
 
-Assem Alhomsi is a production-oriented AI Engineer specializing in building practical generative AI systems end-to-end.
+Assem Alhomsi is an AI Engineer focused on building production-oriented generative AI systems, retrieval infrastructure, backend services, and evaluation-driven AI workflows.
 
-His work spans:
+His work combines:
 
-- Retrieval-Augmented Generation (RAG)
-- production LLM deployment
-- inference serving
-- vector search systems
-- orchestration frameworks
-- agentic workflows
-- evaluation pipelines
-- backend APIs
-- data pipelines
-- cloud deployment
-- applied machine learning systems
+* Retrieval-Augmented Generation (RAG)
+* backend engineering
+* vector retrieval systems
+* orchestration workflows
+* model serving infrastructure
+* evaluation pipelines
+* AI automation systems
+* deployment and operational tooling
 
-He is strongest at building complete AI systems—not isolated models.
+His strongest engineering trait is systems thinking.
 
-His engineering mindset is systems-first:
+He approaches AI products as complete pipelines:
 
-ingestion → preprocessing → embeddings → indexing → retrieval → orchestration → generation → evaluation → deployment
+ingestion → preprocessing → embeddings → retrieval → orchestration → generation → evaluation → deployment
 
-He approaches AI products as production systems requiring:
-
-- reliability
-- maintainability
-- latency awareness
-- grounding quality
-- evaluation loops
-- backend scalability
-- practical business usefulness
+Rather than focusing only on prompts or isolated model interactions, he focuses on how systems behave operationally in production environments.
 
 ---
 
-## Engineering Style
+# boxMind.ai
 
-Assem is known for:
+## Machine Learning & Generative AI Engineer
 
-- strong ownership mentality
-- end-to-end system thinking
-- high quality standards
-- iterative refinement
-- practical execution
-- fast adaptation to new tools
-- balancing experimentation with engineering rigor
-- thinking in architecture before implementation
-- strong debugging mindset
-- product-aware engineering decisions
-- clear technical communication
-
-He naturally operates at the intersection of:
-
-AI + backend + infrastructure + product.
-
----
-
-## boxMind.ai  
-### Machine Learning & Generative AI Engineer  
 **July 2023 – July 2025**
 
 boxMind.ai was the foundation of Assem’s production AI engineering experience.
 
-He worked across backend engineering, deployment infrastructure, retrieval systems, orchestration layers, evaluation systems, and applied AI product development.
+He worked across retrieval systems, backend APIs, orchestration workflows, model infrastructure, evaluation systems, deployment pipelines, and applied AI product development.
 
-This was hands-on builder work—not research-only experimentation.
-
-He owned systems from idea → implementation → deployment → iteration.
-
-### Production LLM Infrastructure
-
-Worked on:
-
-- deploying open-source LLMs on NVIDIA A100 GPU infrastructure
-- serving models via scalable inference APIs
-- optimizing throughput and latency
-- routing intelligently between self-hosted models and external APIs
-- improving reliability and infrastructure efficiency
-- monitoring model serving quality
-- supporting production-level deployment workflows
-
-Technologies:
-
-- NVIDIA A100
-- vLLM
-- Hugging Face
-- Python
-- Flask
-- Docker
-- Linux
+The work emphasized practical AI systems rather than research experimentation. Responsibilities frequently involved taking systems from early architecture through deployment and iterative improvement.
 
 ---
 
-### Retrieval-Augmented Generation (RAG)
+## Production AI Infrastructure
 
-RAG is one of Assem’s strongest technical areas.
+Worked on infrastructure supporting both hosted and self-hosted language models.
 
-Built production retrieval systems involving:
+This included:
 
-- ingestion pipelines
-- chunking strategies
-- metadata enrichment
-- preprocessing pipelines
-- embedding generation
-- vector indexing
-- semantic retrieval
-- reranking
-- retrieval optimization
-- grounded generation
-- hallucination reduction
-- answer quality iteration
+* scalable inference APIs
+* model serving workflows
+* routing between providers and self-hosted models
+* deployment reliability improvements
+* latency and throughput optimization
+* operational infrastructure for production AI systems
 
-Worked with:
+Supported ecosystems included:
 
-- Milvus
-- Chroma
-- FAISS
-- Pinecone familiarity
+* OpenAI
+* Gemini
+* LLaMA
+* Falcon
+* Qwen
+* other hosted and open-source models
 
-Embedding systems:
+Infrastructure and tooling involved:
 
-- OpenAI embeddings
-- open-source embedding models
-- custom embedding preprocessing workflows
-
-Frameworks:
-
-- LangChain
-- custom retrieval pipelines
+* NVIDIA A100 GPU infrastructure
+* vLLM
+* Hugging Face
+* Docker
+* Linux
+* Python backend services
 
 ---
 
-### Agentic Workflows & Orchestration
+## Retrieval Systems & RAG Pipelines
 
-Built multi-step orchestration systems involving:
+Retrieval engineering became one of Assem’s strongest technical areas.
 
-- tool calling
-- stateful workflow execution
-- branching logic
-- memory handling
-- chained reasoning
-- backend integrations
-- multi-step task execution
-- workflow reliability improvements
+Worked on production retrieval systems involving:
 
-Frameworks:
+* ingestion pipelines
+* preprocessing workflows
+* chunking strategies
+* metadata enrichment
+* embedding pipelines
+* vector indexing
+* semantic retrieval
+* retrieval optimization
+* grounding workflows
+* hallucination reduction
+* answer quality iteration
 
-- LangGraph
-- LangChain
-- custom orchestration layers
+The work focused heavily on improving retrieval quality, contextual grounding, and response consistency across enterprise AI systems.
 
----
+Vector systems included:
 
-### Applied AI Product Systems
+* Milvus
+* Chroma
+* FAISS
 
-Worked on customer-facing AI systems across multiple industries.
+Worked with both OpenAI embeddings and open-source embedding models depending on deployment requirements and infrastructure constraints.
 
-Includes:
-
-#### Educational AI Platform
-Built systems for:
-
-- contextual lesson retrieval
-- lesson-scoped RAG
-- guided tutoring
-- adaptive explanation generation
-- quiz reasoning systems
-- reinforcement learning loops for learning behavior
-
-#### Financial Natural Language → SQL
-Built systems for:
-
-- schema grounding
-- safe SQL generation
-- reasoning chains
-- conversational BI
-- query validation
-- agentic follow-up workflows
-
-#### Enterprise Knowledge Systems
-Built assistants for:
-
-- hospital regulation retrieval
-- legal document retrieval
-- operational documentation search
-- enterprise internal knowledge assistants
+Implementation often involved custom retrieval logic and orchestration workflows built around practical production constraints rather than purely framework-driven abstractions.
 
 ---
 
-### Evaluation & Iteration
+## Orchestration & Workflow Systems
 
-Strong evaluation-first engineering mindset.
+Built orchestration systems supporting multi-step AI workflows and backend integrations.
 
-Worked on:
+These systems included:
 
-- retrieval benchmarking
-- answer quality scoring
-- grounding evaluation
-- hallucination analysis
-- prompt comparison
-- hyperparameter experimentation
-- iterative system improvement loops
+* tool routing
+* stateful workflow execution
+* memory-aware workflows
+* chained reasoning pipelines
+* backend task orchestration
+* conversational follow-up handling
+* branching execution logic
+* workflow reliability improvements
 
-Frameworks:
+The focus was reliability and maintainability rather than unrestricted autonomous behavior.
 
-- RAGAS
-- LangSmith
-- internal evaluation tooling
+Implementation stacks included LangGraph, LangChain, and custom orchestration logic where appropriate.
 
 ---
 
-## Apple (via Inspyr Solutions)
-### AI Curator  
+## Applied AI Systems
+
+Worked on customer-facing AI systems across multiple industries including education, finance, healthcare, legal retrieval, and enterprise knowledge systems.
+
+### Educational AI Platform
+
+Worked on AI-powered tutoring and educational retrieval systems involving:
+
+* lesson-scoped retrieval
+* contextual RAG pipelines
+* guided tutoring workflows
+* adaptive explanation systems
+* conversational quiz assistants
+* reasoning-focused educational interactions
+
+The goal was to create systems that behaved more like intelligent tutors than static course platforms.
+
+---
+
+### Financial Natural Language → SQL System
+
+Worked on conversational business intelligence systems that translated natural language into database-aware SQL workflows.
+
+Responsibilities included:
+
+* schema grounding
+* SQL generation workflows
+* validation systems
+* reasoning chains
+* conversational follow-up handling
+* query safety workflows
+* backend integrations
+
+The focus was making complex financial data systems accessible to non-technical users through conversational interfaces.
+
+---
+
+### Enterprise Knowledge Systems
+
+Built retrieval systems for operational and enterprise knowledge access.
+
+Use cases included:
+
+* hospital regulation retrieval
+* legal document retrieval
+* enterprise policy systems
+* operational knowledge assistants
+* internal documentation search
+
+Worked on ingestion architecture, semantic retrieval, backend APIs, and deployment workflows focused on grounded retrieval quality and operational usefulness.
+
+---
+
+## Evaluation & Iterative Improvement
+
+Strong evaluation-driven engineering mindset.
+
+Worked on systems involving:
+
+* retrieval benchmarking
+* groundedness evaluation
+* hallucination analysis
+* prompt comparison
+* answer quality scoring
+* iterative optimization workflows
+* configuration experimentation
+* quality improvement loops
+
+Tools included:
+
+* RAGAS
+* LangSmith
+* internal evaluation tooling
+
+This work reinforced the importance of measurement, observability, and systematic iteration in production AI systems.
+
+---
+
+# Apple (via Inspyr Solutions)
+
+## AI Curator
+
 **2026 – Present**
 
-Works in large-scale AI quality evaluation environments.
+Works in large-scale AI evaluation and quality analysis environments.
 
 Responsibilities include:
 
-- response evaluation
-- reasoning quality assessment
-- hallucination identification
-- policy adherence review
-- structured rubric scoring
-- annotation consistency
-- output calibration
-- quality benchmarking
+* response evaluation
+* reasoning quality assessment
+* hallucination identification
+* policy adherence review
+* structured rubric scoring
+* annotation consistency
+* quality benchmarking
+* output calibration
 
 This strengthened his understanding of:
 
-- LLM failure modes
-- model alignment
-- output quality standards
-- safety considerations
-- reasoning weaknesses
-- evaluation rigor
-- production quality expectations
+* LLM failure modes
+* reasoning weaknesses
+* alignment considerations
+* output reliability
+* evaluation rigor
+* production quality expectations
+* safety-oriented review processes
 
-This experience complements his engineering background by improving how he designs systems for quality, reliability, and safe deployment.
-
----
-
-## ISS  
-### AI Development Intern
-
-Worked on OCR and computer vision pipelines for license plate recognition.
-
-Focused on:
-
-- image preprocessing
-- OCR accuracy optimization
-- recognition pipeline experimentation
-- extraction quality improvements
+This experience complements his engineering background by improving how he approaches reliability, evaluation, and quality-aware system design.
 
 ---
 
-## Core Experience Themes
+# ISS
 
-Across his work, recurring strengths include:
+## AI Development Intern
 
-- production AI systems
-- practical RAG architecture
-- backend engineering
-- orchestration
-- evaluation-driven iteration
-- infrastructure thinking
-- startup execution speed
-- ownership mentality
-- product-minded engineering
+Worked on OCR and computer vision workflows focused on license plate recognition systems.
+
+Responsibilities included:
+
+* image preprocessing
+* OCR experimentation
+* extraction quality optimization
+* recognition pipeline evaluation
+* computer vision workflow testing
+
+---
+
+# Core Engineering Themes
+
+Recurring strengths across Assem’s experience include:
+
+* production AI systems
+* retrieval engineering
+* backend architecture
+* orchestration workflows
+* evaluation-driven iteration
+* infrastructure thinking
+* deployment awareness
+* practical system design
+* end-to-end ownership
+* startup execution speed
+* quality-focused engineering
+* product-aware implementation

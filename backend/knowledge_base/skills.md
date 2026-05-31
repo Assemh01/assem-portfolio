@@ -1,368 +1,339 @@
 ---
+
 category: skills
 priority: critical
 visibility: recruiter_safe
-last_updated: 2026-05-03
----
+last_updated: 2026-05-30
+------------------------
 
 # Skills — Assem Alhomsi
 
-## Overview
+# Overview
 
-Assem Alhomsi is strongest at building production-oriented AI systems end-to-end.
+Assem Alhomsi’s strongest technical area is building practical AI systems that combine retrieval infrastructure, backend engineering, orchestration workflows, evaluation systems, and deployment-aware design.
 
-His technical profile combines:
+His experience spans:
 
-- Generative AI engineering
-- Retrieval-Augmented Generation (RAG)
-- backend engineering
-- orchestration systems
-- model deployment
-- evaluation systems
-- workflow automation
-- infrastructure thinking
+* Retrieval-Augmented Generation (RAG)
+* backend AI systems
+* vector retrieval infrastructure
+* orchestration workflows
+* model serving
+* evaluation systems
+* AI automation pipelines
+* deployment infrastructure
 
-He is best described as:
-
-**AI Engineer with strong backend and systems engineering capability.**
-
-His edge is not a single tool—it is combining components into reliable systems.
+Rather than specializing in a single framework or isolated model workflow, his strength is combining components into maintainable operational systems.
 
 ---
 
-# Core Strength Areas (Strongest)
+# Retrieval Systems & RAG
 
-## 1) Retrieval-Augmented Generation (RAG)
+Retrieval engineering is one of Assem’s strongest technical areas.
 
-One of Assem’s strongest technical areas.
+Hands-on experience includes:
 
-Deep hands-on experience across:
+* ingestion pipelines
+* document preprocessing
+* metadata enrichment
+* chunking strategies
+* embedding workflows
+* vector indexing
+* semantic retrieval
+* retrieval optimization
+* reranking familiarity
+* grounding workflows
+* hallucination reduction
+* contextual answer generation
+* retrieval debugging
+* answer quality iteration
 
-### Ingestion
-- document parsing
-- cleaning
-- normalization
-- metadata enrichment
-- chunking strategies
-- semantic splitting
-- indexing pipelines
+Worked with retrieval systems involving:
 
-### Embeddings
-- embedding model selection
-- embedding generation pipelines
-- similarity tuning
-- retrieval optimization
-- preprocessing for embedding quality
-- refresh / re-index workflows
+* enterprise knowledge retrieval
+* educational retrieval systems
+* conversational retrieval workflows
+* operational document search
+* retrieval-aware orchestration pipelines
 
-### Retrieval
-- dense retrieval
-- semantic search
-- hybrid retrieval familiarity
-- reranking familiarity
-- retrieval quality iteration
-- grounding optimization
-- retrieval debugging
+Vector infrastructure experience includes:
 
-### Generation
-- grounded prompting
-- context construction
-- hallucination reduction
-- answer quality optimization
-- citation / grounding workflows
+* Milvus
+* Chroma
+* FAISS
+* Pinecone familiarity
 
-### Evaluation
-- retrieval benchmarking
-- groundedness analysis
-- answer scoring
-- iterative optimization loops
-- hallucination analysis
+Worked with both hosted and open-source embedding systems depending on infrastructure and deployment constraints.
 
 ---
 
-## 2) LLM Systems Engineering
+# LLM Systems Engineering
 
-Strong hands-on production experience.
+Strong hands-on experience building AI systems around language models.
 
-Includes:
+Areas of work include:
 
-- prompting
-- system prompt design
-- structured outputs
-- tool calling
-- orchestration
-- memory design
-- multi-step workflows
-- latency / quality tradeoff analysis
-- provider routing
-- model behavior evaluation
-- inference serving design
+* prompt engineering
+* system prompt design
+* structured outputs
+* orchestration workflows
+* multi-step reasoning systems
+* provider routing
+* inference workflows
+* backend integrations
+* conversational pipelines
+* latency/quality tradeoffs
+* model behavior evaluation
+* retrieval-aware prompting
 
-Worked with:
+Worked with ecosystems including:
 
-- OpenAI models
-- LLaMA ecosystem
-- Mistral models
-- Hugging Face hosted models
-- self-hosted open-source LLMs
+* OpenAI models
+* LLaMA ecosystem
+* Mistral models
+* Hugging Face hosted models
+* self-hosted open-source models
 
----
-
-## 3) Backend Engineering
-
-Strong backend foundation supporting AI systems.
-
-Built:
-
-- REST APIs
-- service layers
-- request validation
-- worker pipelines
-- async workflows familiarity
-- backend integrations
-- automation services
-- data pipelines
-- deployment pipelines
-- maintainable service architecture
-
-Frameworks:
-
-- FastAPI
-- Flask
-- Pydantic
-
-Database work:
-
-- MySQL
-- PostgreSQL
+Experience includes both hosted APIs and self-hosted inference infrastructure.
 
 ---
 
-## 4) AI Orchestration / Agentic Workflows
+# Backend Engineering
 
-Strong working experience.
+Strong backend engineering foundation supporting AI systems and automation workflows.
 
-Built systems involving:
+Built and worked on:
 
-- tool calling
-- stateful workflows
-- branching execution logic
-- multi-step reasoning chains
-- memory handling
-- backend integrations
-- workflow orchestration
-- agent reliability iteration
+* REST APIs
+* service architecture
+* request validation
+* backend integrations
+* automation services
+* ingestion systems
+* worker pipelines
+* deployment workflows
+* maintainable backend infrastructure
 
-Frameworks:
+Frameworks and tooling include:
 
-- LangGraph
-- LangChain
-- custom orchestration layers
+* FastAPI
+* Flask
+* Pydantic
 
----
+Database experience includes:
 
-## 5) Model Serving / Infrastructure
+* MySQL
+* PostgreSQL
 
-Production serving experience includes:
+Frontend familiarity includes:
 
-- inference APIs
-- serving architecture
-- deployment workflows
-- throughput tuning
-- latency optimization
-- routing layers
-- reliability improvements
-- monitoring
-- scaling considerations
-
-Infrastructure:
-
-- NVIDIA A100
-- vLLM
-- Docker
-- Linux
-- API gateways
+* React
+* Next.js
 
 ---
 
-# Strong Working Experience
+# Orchestration & Workflow Systems
 
-## Vector Databases
-
-Worked with:
-
-- Milvus (strong)
-- Chroma (strong)
-- FAISS (strong)
-- Pinecone (working familiarity)
-
-Use cases:
-
-- vector indexing
-- semantic retrieval
-- enterprise knowledge systems
-- retrieval experimentation
-- scalable search pipelines
-
----
-
-## Evaluation / AI Quality
-
-Strong practical evaluation mindset.
-
-Worked with:
-
-- RAGAS
-- LangSmith
-- retrieval scoring
-- prompt comparison
-- hallucination analysis
-- quality benchmarking
-- groundedness evaluation
-- structured rubric evaluation
-- annotation quality
-- reasoning assessment
-
-Apple evaluation work strengthened:
-
-- failure mode understanding
-- output quality judgment
-- alignment awareness
-- safety considerations
-- model calibration intuition
-
----
-
-## Data Pipelines / Automation
-
-Built:
-
-- scheduled ingestion pipelines
-- preprocessing workflows
-- embedding automation
-- refresh jobs
-- evaluation automation
-- indexing workflows
-- batch pipelines
-
-Tools:
-
-- Apache Airflow
-- GitHub Actions
-
----
-
-## Cloud / DevOps
-
-Worked with:
-
-- AWS Lambda
-- API Gateway
-- S3
-- Docker
-- Linux servers
-- CI/CD
-- GitHub Actions
+Worked on orchestration systems supporting multi-step AI workflows and backend task coordination.
 
 Experience includes:
 
-- deployments
-- containerization
-- backend hosting
-- automation
-- troubleshooting
-- release workflows
+* tool routing
+* stateful workflows
+* conversational follow-up handling
+* chained reasoning pipelines
+* memory-aware workflows
+* backend orchestration
+* branching execution logic
+* workflow reliability improvements
+
+Implementation stacks included:
+
+* LangGraph
+* LangChain
+* custom orchestration workflows
+
+The focus was typically operational reliability and maintainability rather than unrestricted agent autonomy.
+
+---
+
+# Infrastructure & Model Serving
+
+Worked on infrastructure supporting production AI systems and inference workflows.
+
+Experience includes:
+
+* inference APIs
+* model serving workflows
+* deployment systems
+* hosted/self-hosted routing
+* throughput optimization
+* latency improvements
+* operational reliability
+* infrastructure troubleshooting
+* scaling considerations
+
+Infrastructure and tooling include:
+
+* NVIDIA A100
+* vLLM
+* Docker
+* Linux
+* API gateways
+* Hugging Face
+
+Worked with both hosted and self-hosted deployment patterns depending on operational requirements.
+
+---
+
+# Evaluation & AI Quality
+
+Strong evaluation-oriented engineering mindset.
+
+Worked on systems involving:
+
+* retrieval benchmarking
+* groundedness evaluation
+* hallucination analysis
+* answer scoring
+* prompt comparison
+* quality benchmarking
+* structured evaluation workflows
+* reasoning assessment
+* iterative optimization
+
+Tools and platforms include:
+
+* RAGAS
+* LangSmith
+* internal evaluation tooling
+
+Current evaluation work strengthened understanding of:
+
+* model failure modes
+* output reliability
+* reasoning weaknesses
+* alignment considerations
+* quality calibration
+* safety-aware review workflows
+
+---
+
+# Automation & Data Pipelines
+
+Worked on automation systems supporting retrieval and AI workflows.
+
+Experience includes:
+
+* ingestion automation
+* embedding refresh systems
+* preprocessing workflows
+* indexing pipelines
+* scheduled jobs
+* evaluation automation
+* retrieval workflow automation
+* backend pipeline orchestration
+
+Tooling includes:
+
+* Apache Airflow
+* GitHub Actions
+
+---
+
+# Cloud & Deployment
+
+Worked with deployment infrastructure and operational backend systems involving:
+
+* AWS Lambda
+* API Gateway
+* S3
+* Docker
+* Linux servers
+* CI/CD workflows
+* deployment troubleshooting
+* backend hosting
+
+Experience includes both cloud-hosted and self-hosted operational environments.
 
 ---
 
 # Additional Technical Experience
 
 ## Machine Learning
+
 Worked with:
 
-- PyTorch
-- TensorFlow
-- Keras
-- scikit-learn
+* PyTorch
+* TensorFlow
+* Keras
+* scikit-learn
 
-Used for:
-
-- experimentation
-- modeling
-- preprocessing
-- evaluation
+Used primarily for experimentation, preprocessing, modeling support, and evaluation workflows.
 
 ---
 
-## Computer Vision / OCR
+## Computer Vision & OCR
 
-Worked with:
+Worked on OCR-assisted workflows and computer vision pipelines involving:
 
-- OpenCV
-- EasyOCR
-- PaddleOCR
-- Keras OCR workflows
+* OCR extraction
+* preprocessing
+* text normalization
+* extraction optimization
+* document understanding support
 
-Built:
+Technologies include:
 
-- OCR extraction pipelines
-- preprocessing systems
-- recognition optimization
-- extraction workflows
+* OpenCV
+* EasyOCR
+* PaddleOCR
 
 ---
 
 ## Speech AI
 
-Worked on:
+Worked on conversational voice workflows involving:
 
-- Speech-to-Text
-- Text-to-Speech
-- conversational voice systems
+* Speech-to-Text
+* Text-to-Speech
+* conversational voice systems
+* voice automation workflows
 
-Applications:
-
-- ordering systems
-- customer support workflows
-- voice automation
+Applications included ordering systems, customer support augmentation, and conversational workflow automation.
 
 ---
 
-# Programming
+# Programming Languages
 
 Primary:
 
-- Python
-- SQL
+* Python
+* SQL
 
-Working:
+Working familiarity:
 
-- JavaScript
-- TypeScript
-
-Frontend familiarity:
-
-- React
-- Next.js
+* JavaScript
+* TypeScript
 
 ---
 
-# Professional Engineering Traits
+# Core Engineering Strengths
 
-Strongest professional traits:
+Recurring engineering strengths include:
 
-- systems thinking
-- ownership mentality
-- product awareness
-- architecture-first thinking
-- iterative refinement
-- quality focus
-- strong written communication
-- adaptability
-- cross-functional collaboration
-- fast learning
-- practical execution
-- startup versatility
+* retrieval systems intuition
+* backend engineering capability
+* infrastructure awareness
+* orchestration thinking
+* evaluation mindset
+* practical execution
+* adaptability
+* product-aware engineering
+* iterative refinement
+* maintainable system design
+* operational thinking
+* balancing experimentation with reliability
 
 ---
 
@@ -370,4 +341,4 @@ Strongest professional traits:
 
 Best concise description:
 
-**Production AI Engineer specializing in RAG systems, LLM orchestration, backend AI infrastructure, and evaluation-driven iteration.**
+**AI Engineer with hands-on experience building retrieval systems, backend AI infrastructure, orchestration workflows, evaluation systems, and production-oriented generative AI applications.**

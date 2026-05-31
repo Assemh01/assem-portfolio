@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import Header from "../components/Header";
 import ServiceCard from "../components/ServiceCard";
 import Socials from "../components/Socials";
@@ -57,6 +57,17 @@ export default function Home() {
       { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
       { y: 0, x: 0, transform: "scale(1)" }
     );
+  }, []);
+
+  useEffect(() => {
+    router.prefetch("/chat");
+  }, [router]);
+
+  useEffect(() => {
+    const API_URL =
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+    fetch(`${API_URL}/health`).catch(() => {});
   }, []);
 
   return (
@@ -184,7 +195,10 @@ export default function Home() {
 
                 <button
                   type="button"
-                  onClick={() => router.push("/chat")}
+                  onClick={() => {
+                    router.prefetch("/chat");
+                    router.push("/chat");
+                  }}
                   className="
                     mt-6
                     rounded-xl

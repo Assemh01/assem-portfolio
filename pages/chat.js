@@ -212,7 +212,7 @@ export default function ChatPage() {
         <title>Chat with Assem</title>
       </Head>
 
-      {false && data.showCursor && <Cursor />}
+      {data.showCursor && typeof window !== "undefined" && window.innerWidth >= 1024 && <Cursor />}
 
       <div className="relative min-h-[100dvh] overflow-hidden bg-white text-black dark:bg-black dark:text-white">
         <div className="gradient-circle" />

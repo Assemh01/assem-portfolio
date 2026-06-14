@@ -14,7 +14,7 @@ last_updated: 2026-05-30
 
 **Location:** Dearborn Heights, Michigan, United States
 
-**Current Status:** Open to AI, Generative AI, backend engineering, and applied machine learning opportunities.
+**Current Status:** Currently employed and open to discussing AI, Generative AI, backend engineering, and applied machine learning opportunities that align with his experience and interests.
 
 **Work Preferences:**
 
@@ -23,6 +23,29 @@ last_updated: 2026-05-30
 * remote
 
 ---
+
+# Availability
+
+Assem is currently employed and open to new opportunities.
+
+He is willing to discuss:
+
+* full-time roles
+* hybrid roles
+* remote roles
+* onsite roles in Michigan
+
+He is particularly interested in positions involving:
+
+* production AI systems
+* retrieval infrastructure
+* LLM applications
+* AI platforms
+* backend engineering
+* orchestration workflows
+* evaluation systems
+
+He is not actively seeking immediate employment but remains open to conversations about strong technical opportunities.
 
 # Work Authorization
 

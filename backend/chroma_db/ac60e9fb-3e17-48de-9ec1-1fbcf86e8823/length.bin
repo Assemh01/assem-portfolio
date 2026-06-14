@@ -1,1 +1,20 @@
-invalid type: string "## Failure mode analysis is highly valuable\n\nInstead of asking only whether systems failed, it is often more useful to ask why they failed.\n\nExamples include:\n\n* retrieval failures\n* reasoning failures\n* orchestration failures\n* prompt failures\n* context construction issues\n* infrastructure issues\n* UX problems\n\niteration instead of relying only on intuition.\nÿ
+## Foundations outlast tooling trends
+
+Frameworks and ecosystems evolve quickly.
+
+Foundational engineering skills compound more consistently over time.
+
+Important long-term areas include:
+
+* architecture
+* debugging
+* evaluation
+* systems thinking
+* operational reasoning
+* tradeoff analysis
+* communication
+* maintainability
+
+These foundations remain valuable across changing tooling ecosystems.
+
+--

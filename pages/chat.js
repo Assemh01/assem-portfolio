@@ -6,7 +6,11 @@ import data from "../data/portfolio.json";
 import Image from "next/image";
 import { ArrowUp, PanelLeft, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-
+import {
+  buildBrowserMetadata,
+  getDeviceType,
+  trackAnalyticsEvent,
+} from "../utils/analytics";
 
 const CodeBlock = {
   code({ inline, children, ...props }) {
@@ -42,15 +46,23 @@ export default function ChatPage() {
   const hasStartedChat = messages.length > 0;
   const messagesEndRef = useRef(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const requestStartedAtRef = useRef(null);
+  const activeRequestIdRef = useRef(null);
+  const firstTokenReceivedRef = useRef(false);
+  const cancellationTrackedRef = useRef(false);
   const resetChat = () => {
-    controllerRef.current?.abort();
-    controllerRef.current = null;
+    if (controllerRef.current) {
+      stopGeneration();
+    }
 
     setMessages([]);
     setMessage("");
     setLoading(false);
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
   const [exploreOpen, setExploreOpen] = useState(false);
   const [openTopic, setOpenTopic] = useState("Projects");
@@ -108,6 +120,16 @@ export default function ChatPage() {
   }, [messages]);
 
   useEffect(() => {
+    void trackAnalyticsEvent({
+      event_name: "chat_initialized",
+      device_type: getDeviceType(),
+      metadata: buildBrowserMetadata({
+        page: "chat",
+      }),
+    });
+  }, []);
+
+  useEffect(() => {
     const nearBottom =
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 180;
 
@@ -120,6 +142,23 @@ export default function ChatPage() {
     const content = (prefill ?? message).trim();
 
     if (!content || loading) return;
+
+    requestStartedAtRef.current = performance.now();
+    activeRequestIdRef.current = null;
+    firstTokenReceivedRef.current = false;
+    cancellationTrackedRef.current = false;
+
+    void trackAnalyticsEvent({
+      event_name: "message_sent",
+      device_type: getDeviceType(),
+      metadata: buildBrowserMetadata({
+        message_length: content.length,
+        message_source: prefill
+          ? "suggested_question"
+          : "typed_message",
+        history_length: messages.length,
+      }),
+    });
 
     const userMessage = {
       role: "user",
@@ -154,6 +193,16 @@ export default function ChatPage() {
         signal: controller.signal,
       });
 
+      const backendRequestId =
+        res.headers.get("X-Request-ID");
+
+      activeRequestIdRef.current = backendRequestId;
+      if (!res.ok) {
+        throw new Error(
+          `Chat request failed with status ${res.status}`
+        );
+      }
+
       if (!res.body) {
         throw new Error("No response body");
       }
@@ -167,6 +216,27 @@ export default function ChatPage() {
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
+        if (
+          !firstTokenReceivedRef.current &&
+          chunk.length > 0
+        ) {
+          firstTokenReceivedRef.current = true;
+
+          const firstTokenMs =
+            requestStartedAtRef.current !== null
+              ? performance.now() -
+                requestStartedAtRef.current
+              : null;
+
+          void trackAnalyticsEvent({
+            event_name: "first_token_received",
+            request_id: activeRequestIdRef.current,
+            time_to_first_token_ms: firstTokenMs,
+            time_to_first_response_ms: firstTokenMs,
+            device_type: getDeviceType(),
+            metadata: buildBrowserMetadata(),
+          });
+        }
 
         setMessages((prev) => {
           const updated = [...prev];
@@ -180,30 +250,120 @@ export default function ChatPage() {
           return updated;
         });
       }
+      const completionMs =
+        requestStartedAtRef.current !== null
+          ? performance.now() -
+            requestStartedAtRef.current
+          : null;
+
+      void trackAnalyticsEvent({
+        event_name: "stream_completed",
+        request_id: activeRequestIdRef.current,
+        stream_completion_ms: completionMs,
+        device_type: getDeviceType(),
+        metadata: buildBrowserMetadata({
+          received_first_token:
+            firstTokenReceivedRef.current,
+        }),
+      });
     } catch (error) {
-        if (error.name === "AbortError") {
-          console.log("Generation stopped");
-          return;
+      if (error.name === "AbortError") {
+        console.log("Generation stopped");
+
+        if (!cancellationTrackedRef.current) {
+          cancellationTrackedRef.current = true;
+
+          const cancellationMs =
+            requestStartedAtRef.current !== null
+              ? performance.now() -
+                requestStartedAtRef.current
+              : null;
+
+          void trackAnalyticsEvent({
+            event_name: "stream_cancelled",
+            request_id: activeRequestIdRef.current,
+            stream_completion_ms: cancellationMs,
+            device_type: getDeviceType(),
+            metadata: buildBrowserMetadata({
+              source: "abort_controller",
+              received_first_token:
+                firstTokenReceivedRef.current,
+            }),
+          });
         }
 
-        setMessages((prev) => {
-          const updated = [...prev];
+        return;
+      }
 
-          updated[updated.length - 1] = {
-            ...updated[updated.length - 1],
-            content: "Something went wrong.",
-          };
+      const failureMs =
+        requestStartedAtRef.current !== null
+          ? performance.now() -
+            requestStartedAtRef.current
+          : null;
 
-          return updated;
-        });
-      } finally {
+      void trackAnalyticsEvent({
+        event_name: "stream_failed",
+        request_id: activeRequestIdRef.current,
+        stream_completion_ms: failureMs,
+        device_type: getDeviceType(),
+        metadata: buildBrowserMetadata({
+          error_type:
+            error instanceof Error
+              ? error.name
+              : "UnknownError",
+          error_message:
+            error instanceof Error
+              ? error.message.slice(0, 300)
+              : "Unknown frontend error",
+        }),
+      });
+
+      setMessages((prev) => {
+        const updated = [...prev];
+
+        updated[updated.length - 1] = {
+          ...updated[updated.length - 1],
+          content: "Something went wrong.",
+        };
+
+        return updated;
+      });
+    } finally {
         controllerRef.current = null;
+        activeRequestIdRef.current = null;
+        requestStartedAtRef.current = null;
+        firstTokenReceivedRef.current = false;
         setLoading(false);
       }
-    };
-
+      };
     const stopGeneration = () => {
-      controllerRef.current?.abort();
+      if (!controllerRef.current) {
+        return;
+      }
+
+      const cancellationMs =
+        requestStartedAtRef.current !== null
+          ? performance.now() -
+            requestStartedAtRef.current
+          : null;
+
+      if (!cancellationTrackedRef.current) {
+        cancellationTrackedRef.current = true;
+
+        void trackAnalyticsEvent({
+          event_name: "stream_cancelled",
+          request_id: activeRequestIdRef.current,
+          stream_completion_ms: cancellationMs,
+          device_type: getDeviceType(),
+          metadata: buildBrowserMetadata({
+            source: "stop_button",
+            received_first_token:
+              firstTokenReceivedRef.current,
+          }),
+        });
+      }
+
+      controllerRef.current.abort();
       setLoading(false);
     };
   return (

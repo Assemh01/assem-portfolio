@@ -10,6 +10,11 @@ import Cursor from "../components/Cursor";
 import BackToTop from "../components/BackToTop";
 import ProjectItem from "../components/ProjectItem";
 import { useRouter } from "next/router";
+import {
+  buildBrowserMetadata,
+  getDeviceType,
+  trackAnalyticsEvent,
+} from "../utils/analytics";
 
 // Local Data
 import data from "../data/portfolio.json";
@@ -24,7 +29,7 @@ export default function Home() {
   const textFour = useRef();
   const skillsRef = useRef();
   const router = useRouter();
-
+  const homepageStartedAtRef = useRef(null);
   // ===== Scroll handlers (Header nav -> scroll to sections) =====
   const handleWorkScroll = () => {
     window.scrollTo({
@@ -62,6 +67,18 @@ export default function Home() {
   useEffect(() => {
     router.prefetch("/chat");
   }, [router]);
+
+  useEffect(() => {
+    homepageStartedAtRef.current = performance.now();
+
+    void trackAnalyticsEvent({
+      event_name: "homepage_loaded",
+      device_type: getDeviceType(),
+      metadata: buildBrowserMetadata({
+        page: "homepage",
+      }),
+    });
+  }, []);
 
   useEffect(() => {
     const API_URL =
@@ -196,6 +213,21 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => {
+                    const chatOpenTime =
+                      homepageStartedAtRef.current !== null
+                        ? performance.now() -
+                          homepageStartedAtRef.current
+                        : null;
+
+                    void trackAnalyticsEvent({
+                      event_name: "chat_opened",
+                      chat_page_navigation_ms: chatOpenTime,
+                      device_type: getDeviceType(),
+                      metadata: buildBrowserMetadata({
+                        source: "portfolio_homepage",
+                      }),
+                    });
+
                     router.prefetch("/chat");
                     router.push("/chat");
                   }}

@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     #Enable Reranker
     ENABLE_RERANKING: bool = True
 
+    #Database
+    DATABASE_URL: str
+
     # App
     APP_NAME: str = "Assem Portfolio API"
     APP_VERSION: str = "0.1.0"

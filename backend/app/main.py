@@ -142,7 +142,7 @@ def health():
 # Frontend Analytics
 # -----------------------------------------------------------------------------
 
-@app.post("/analytics/event", status_code=204)
+@app.post("/client-metrics", status_code=204)
 @limiter.limit("60/minute")
 async def analytics_event(
     request: Request,
@@ -188,7 +188,7 @@ async def analytics_event(
             db,
             exc,
             request_id=request_id,
-            endpoint="/analytics/event",
+            endpoint="/client-metrics",
         )
 
         raise HTTPException(

@@ -54,7 +54,7 @@ export function getBrowserName() {
 export async function trackAnalyticsEvent(payload) {
   try {
     const response = await fetch(
-      `${API_URL}/analytics/event`,
+      `${API_URL}/client-metrics`,
       {
         method: "POST",
         headers: {

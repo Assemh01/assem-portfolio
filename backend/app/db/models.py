@@ -8,11 +8,40 @@ class ChatRequest(Base):
     __tablename__ = "chat_requests"
 
     id = Column(Integer, primary_key=True, index=True)
-    request_id = Column(String(100), unique=True, index=True, nullable=False)
 
-    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    request_id = Column(
+        String(100),
+        unique=True,
+        index=True,
+        nullable=False,
+    )
+
+    visitor_id = Column(
+        String(100),
+        index=True,
+        nullable=True,
+    )
+
+    conversation_id = Column(
+        String(100),
+        index=True,
+        nullable=True,
+    )
+
+    message_id = Column(
+        String(100),
+        unique=True,
+        index=True,
+        nullable=True,
+    )
+
+    timestamp = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
 
     user_query = Column(Text, nullable=False)
+    response_text = Column(Text, nullable=True)
     response_length = Column(Integer, nullable=True)
 
     model_used = Column(String(100), nullable=True)
@@ -21,12 +50,17 @@ class ChatRequest(Base):
 
     frontend_source = Column(String(100), nullable=True)
     device_type = Column(String(50), nullable=True)
+    browser = Column(String(100), nullable=True)
+    screen_width = Column(Integer, nullable=True)
+    screen_height = Column(Integer, nullable=True)
 
     total_latency_ms = Column(Float, nullable=True)
     retrieval_latency_ms = Column(Float, nullable=True)
     generation_latency_ms = Column(Float, nullable=True)
+    backend_ttft_ms = Column(Float, nullable=True)
 
     status = Column(String(50), default="success")
+    stream_cancelled = Column(Boolean, default=False)
     error_message = Column(Text, nullable=True)
 
 

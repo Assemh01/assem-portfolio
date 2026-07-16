@@ -8,7 +8,44 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
-    history: Optional[List[ChatMessage]] = []
+    history: Optional[List[ChatMessage]] = Field(
+        default_factory=list
+    )
+
+    visitor_id: str | None = Field(
+        default=None,
+        max_length=100,
+    )
+
+    conversation_id: str | None = Field(
+        default=None,
+        max_length=100,
+    )
+
+    message_id: str | None = Field(
+        default=None,
+        max_length=100,
+    )
+
+    device_type: str | None = Field(
+        default=None,
+        max_length=50,
+    )
+
+    browser: str | None = Field(
+        default=None,
+        max_length=100,
+    )
+
+    screen_width: int | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    screen_height: int | None = Field(
+        default=None,
+        ge=0,
+    )
 
 
 class ChatResponse(BaseModel):

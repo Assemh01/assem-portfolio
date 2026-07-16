@@ -276,8 +276,10 @@ def stream_chat_response(
             "generation_latency_ms": generation_time * 1000,
             "total_latency_ms": total_time * 1000,
             "time_to_first_token_ms": first_token_ms,
+            "response_text": response,
             "response_length": len(response),
             "status": status,
+            "stream_cancelled": status == "cancelled",
             "error_message": error_message,
             "used_forced_context": forced_context is not None,
             "reranking_enabled": retrieval_metrics.get(

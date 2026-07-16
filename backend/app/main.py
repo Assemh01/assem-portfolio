@@ -268,11 +268,14 @@ async def chat(
 
     finally:
         total_latency_ms = (time.perf_counter() - start_time) * 1000
-
         log_chat_request(
             db,
             request_id=request_id,
+            visitor_id=payload.visitor_id,
+            conversation_id=payload.conversation_id,
+            message_id=payload.message_id,
             user_query=payload.message,
+            response_text=response or None,
             response_length=len(response) if response else None,
             model_used=settings.OPENAI_MODEL,
             streaming_enabled=False,
@@ -283,6 +286,11 @@ async def chat(
                 "reranking_enabled",
                 False,
             ),
+            frontend_source="portfolio_chat",
+            device_type=payload.device_type,
+            browser=payload.browser,
+            screen_width=payload.screen_width,
+            screen_height=payload.screen_height,
             total_latency_ms=total_latency_ms,
             retrieval_latency_ms=metrics.get(
                 "retrieval_latency_ms"
@@ -290,7 +298,9 @@ async def chat(
             generation_latency_ms=metrics.get(
                 "generation_latency_ms"
             ),
+            backend_ttft_ms=None,
             status=status,
+            stream_cancelled=False,
             error_message=error_message,
         )
 
@@ -346,7 +356,11 @@ async def chat_stream(
                 log_chat_request(
                     db,
                     request_id=request_id,
+                    visitor_id=payload.visitor_id,
+                    conversation_id=payload.conversation_id,
+                    message_id=payload.message_id,
                     user_query=payload.message,
+                    response_text=metrics.get("response_text"),
                     response_length=metrics["response_length"],
                     model_used=settings.OPENAI_MODEL,
                     streaming_enabled=True,
@@ -354,6 +368,11 @@ async def chat_stream(
                         "reranking_enabled",
                         False,
                     ),
+                    frontend_source="portfolio_chat",
+                    device_type=payload.device_type,
+                    browser=payload.browser,
+                    screen_width=payload.screen_width,
+                    screen_height=payload.screen_height,
                     total_latency_ms=metrics["total_latency_ms"],
                     retrieval_latency_ms=metrics[
                         "retrieval_latency_ms"
@@ -361,7 +380,14 @@ async def chat_stream(
                     generation_latency_ms=metrics[
                         "generation_latency_ms"
                     ],
+                    backend_ttft_ms=metrics.get(
+                        "time_to_first_token_ms"
+                    ),
                     status=metrics["status"],
+                    stream_cancelled=metrics.get(
+                        "stream_cancelled",
+                        False,
+                    ),
                     error_message=metrics["error_message"],
                 )
 
@@ -369,12 +395,12 @@ async def chat_stream(
                     db,
                     request_id=request_id,
                     event_name=f"stream_{metrics['status']}",
-                    time_to_first_token_ms=metrics[
+                    time_to_first_token_ms=metrics.get(
                         "time_to_first_token_ms"
-                    ],
-                    stream_completion_ms=metrics[
+                    ),
+                    stream_completion_ms=metrics.get(
                         "total_latency_ms"
-                    ],
+                    ),
                 )
 
                 if metrics["status"] == "error":
@@ -423,18 +449,28 @@ async def chat_stream(
             log_chat_request(
                 db,
                 request_id=request_id,
+                visitor_id=payload.visitor_id,
+                conversation_id=payload.conversation_id,
+                message_id=payload.message_id,
                 user_query=payload.message,
+                response_text=None,
                 response_length=None,
                 model_used=settings.OPENAI_MODEL,
                 streaming_enabled=True,
                 reranking_enabled=False,
+                frontend_source="portfolio_chat",
+                device_type=payload.device_type,
+                browser=payload.browser,
+                screen_width=payload.screen_width,
+                screen_height=payload.screen_height,
                 total_latency_ms=total_latency_ms,
                 retrieval_latency_ms=None,
                 generation_latency_ms=None,
+                backend_ttft_ms=None,
                 status="error",
+                stream_cancelled=False,
                 error_message=error_message,
             )
-
             log_error(
                 db,
                 exc,

@@ -11,6 +11,12 @@ import {
   getDeviceType,
   trackAnalyticsEvent,
 } from "../utils/analytics";
+import {
+  createMessageId,
+  getConversationId,
+  getVisitorId,
+  startNewConversation,
+} from "../utils/chatIdentity";
 
 const CodeBlock = {
   code({ inline, children, ...props }) {
@@ -50,10 +56,31 @@ export default function ChatPage() {
   const activeRequestIdRef = useRef(null);
   const firstTokenReceivedRef = useRef(false);
   const cancellationTrackedRef = useRef(false);
+  const controllerRef = useRef(null);
+  const getChatClientMetadata = () => {
+  const browserMetadata = buildBrowserMetadata();
+    return {
+      device_type: getDeviceType(),
+      browser:
+        browserMetadata.browser ||
+        browserMetadata.browser_name ||
+        null,
+      screen_width:
+        typeof window !== "undefined"
+          ? window.screen.width
+          : null,
+      screen_height:
+        typeof window !== "undefined"
+          ? window.screen.height
+          : null,
+    };
+  };
   const resetChat = () => {
     if (controllerRef.current) {
       stopGeneration();
     }
+
+    startNewConversation();
 
     setMessages([]);
     setMessage("");
@@ -137,11 +164,15 @@ export default function ChatPage() {
       scrollToBottom();
     }
   }, [messages]);
-  const controllerRef = useRef(null);
-  const sendMessage = async (prefill = null) => {
+    const sendMessage = async (prefill = null) => {
     const content = (prefill ?? message).trim();
 
     if (!content || loading) return;
+
+    const visitorId = getVisitorId();
+    const conversationId = getConversationId();
+    const messageId = createMessageId();
+    const clientMetadata = getChatClientMetadata();
 
     requestStartedAtRef.current = performance.now();
     activeRequestIdRef.current = null;
@@ -152,6 +183,9 @@ export default function ChatPage() {
       event_name: "message_sent",
       device_type: getDeviceType(),
       metadata: buildBrowserMetadata({
+        message_id: messageId,
+        conversation_id: conversationId,
+        visitor_id: visitorId,
         message_length: content.length,
         message_source: prefill
           ? "suggested_question"
@@ -189,6 +223,15 @@ export default function ChatPage() {
         body: JSON.stringify({
           message: content,
           history: messages,
+
+          visitor_id: visitorId,
+          conversation_id: conversationId,
+          message_id: messageId,
+
+          device_type: clientMetadata.device_type,
+          browser: clientMetadata.browser,
+          screen_width: clientMetadata.screen_width,
+          screen_height: clientMetadata.screen_height,
         }),
         signal: controller.signal,
       });

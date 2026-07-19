@@ -19,6 +19,7 @@ import {
   Zap,
 } from "lucide-react";
 
+
 function formatDuration(milliseconds) {
   if (milliseconds === null || milliseconds === undefined) {
     return "—";
@@ -355,43 +356,52 @@ export default function AnalyticsPage() {
                 reliability.
               </p>
             </div>
-
-            <div className="flex flex-col gap-3 tablet:flex-row tablet:items-center">
-              <div className="text-left tablet:text-right">
-                <p className="text-xs font-medium uppercase tracking-wider text-slate-600">
-                  Last updated
-                </p>
-
-                <p className="mt-1 text-sm text-slate-400">
-                  {formatUpdatedTime(lastUpdated)}
-                </p>
-              </div>
-              <Link href="/admin/conversations">
-                    <a className="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-900 px-4 text-sm font-medium leading-none text-slate-200 transition hover:border-purple-400/30 hover:bg-slate-800 hover:text-white">
-                        <MessageSquare
-                        size={16}
-                        className="shrink-0 text-slate-400"
-                        />
-
-                        <span className="leading-none">
-                        Conversations
-                        </span>
-                    </a>
+            <div className="flex flex-col gap-3">
+              <nav className="flex overflow-x-auto rounded-xl border border-white/10 bg-slate-900/70 p-1">
+                <Link href="/admin/analytics">
+                  <a className="shrink-0 rounded-lg bg-purple-500/15 px-4 py-2 text-sm font-medium text-purple-200">
+                    Overview
+                  </a>
                 </Link>
 
-              <button
-                type="button"
-                onClick={() => void loadSummary()}
-                disabled={isLoadingSummary}
-                className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-900 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-purple-400/40 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <RefreshCw
-                  size={16}
-                  className={isLoadingSummary ? "animate-spin" : ""}
-                />
+                <Link href="/admin/trends?range=30d">
+                  <a className="shrink-0 rounded-lg px-4 py-2 text-sm text-slate-400 transition hover:bg-white/5 hover:text-white">
+                    Trends
+                  </a>
+                </Link>
 
-                {isLoadingSummary ? "Refreshing…" : "Refresh data"}
-              </button>
+                <Link href="/admin/conversations">
+                  <a className="shrink-0 rounded-lg px-4 py-2 text-sm text-slate-400 transition hover:bg-white/5 hover:text-white">
+                    Conversations
+                  </a>
+                </Link>
+              </nav>
+
+              <div className="flex items-center justify-between gap-4 laptop:justify-end">
+                <div className="text-left laptop:text-right">
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-600">
+                    Last updated
+                  </p>
+
+                  <p className="mt-1 text-sm text-slate-400">
+                    {formatUpdatedTime(lastUpdated)}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => void loadSummary()}
+                  disabled={isLoadingSummary}
+                  className="inline-flex min-h-[42px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-900 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-purple-400/40 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <RefreshCw
+                    size={16}
+                    className={isLoadingSummary ? "animate-spin" : ""}
+                  />
+
+                  {isLoadingSummary ? "Refreshing…" : "Refresh data"}
+                </button>
+              </div>
             </div>
           </header>
 
@@ -422,7 +432,6 @@ export default function AnalyticsPage() {
                     title="Overview"
                     description="High-level chatbot activity and completion metrics."
                   />
-
                   <div className="mt-4 grid gap-4 tablet:grid-cols-2 desktop:grid-cols-4">
                     <MetricCard
                       title="Total conversations"
@@ -566,7 +575,6 @@ export default function AnalyticsPage() {
                     />
                   </div>
                 </section>
-
                 <footer className="mt-12 border-t border-white/10 py-6">
                   <p className="text-xs text-slate-600">
                     Aggregate analytics across all recorded chatbot traffic.

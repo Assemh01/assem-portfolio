@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -102,7 +103,7 @@ function MetricCard({
         "group relative h-full overflow-hidden rounded-2xl border",
         "shadow-sm transition duration-200",
         "hover:-translate-y-0.5 hover:border-white/20 hover:shadow-xl",
-        compact ? "min-h-[132px] p-5" : "min-h-[158px] p-6",
+        compact ? "min-h-[132px] p-5" : "min-h-[145px] p-5",
         styles.card,
       ].join(" ")}
     >
@@ -180,7 +181,7 @@ function SectionHeader({
 function DashboardSkeleton() {
   return (
     <>
-      <section className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="mt-8 grid gap-4 tablet:grid-cols-2 desktop:grid-cols-4">
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={`overview-${index}`}
@@ -192,7 +193,7 @@ function DashboardSkeleton() {
       <section className="mt-10">
         <div className="h-6 w-40 animate-pulse rounded bg-slate-900" />
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-4 grid gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
               key={`performance-${index}`}
@@ -333,9 +334,9 @@ export default function AnalyticsPage() {
         <meta name="robots" content="noindex,nofollow" />
       </Head>
 
-      <main className="min-h-screen bg-slate-950 px-4 py-8 text-white sm:px-6 lg:px-8">
+      <main className="min-h-screen bg-slate-950 px-4 py-8 text-white tablet:px-6 laptop:px-8">
         <div className="mx-auto max-w-7xl">
-          <header className="flex flex-col gap-6 border-b border-white/10 pb-8 lg:flex-row lg:items-end lg:justify-between">
+          <header className="flex flex-col gap-6 border-b border-white/10 pb-8 laptop:flex-row laptop:items-end laptop:justify-between">
             <div>
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-400" />
@@ -345,7 +346,7 @@ export default function AnalyticsPage() {
                 </p>
               </div>
 
-              <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+              <h1 className="mt-3 text-3xl font-semibold tracking-tight tablet:text-4xl">
                 Portfolio Analytics
               </h1>
 
@@ -355,8 +356,8 @@ export default function AnalyticsPage() {
               </p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <div className="text-left sm:text-right">
+            <div className="flex flex-col gap-3 tablet:flex-row tablet:items-center">
+              <div className="text-left tablet:text-right">
                 <p className="text-xs font-medium uppercase tracking-wider text-slate-600">
                   Last updated
                 </p>
@@ -365,6 +366,18 @@ export default function AnalyticsPage() {
                   {formatUpdatedTime(lastUpdated)}
                 </p>
               </div>
+              <Link href="/admin/conversations">
+                    <a className="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-slate-900 px-4 text-sm font-medium leading-none text-slate-200 transition hover:border-purple-400/30 hover:bg-slate-800 hover:text-white">
+                        <MessageSquare
+                        size={16}
+                        className="shrink-0 text-slate-400"
+                        />
+
+                        <span className="leading-none">
+                        Conversations
+                        </span>
+                    </a>
+                </Link>
 
               <button
                 type="button"
@@ -410,7 +423,7 @@ export default function AnalyticsPage() {
                     description="High-level chatbot activity and completion metrics."
                   />
 
-                  <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                  <div className="mt-4 grid gap-4 tablet:grid-cols-2 desktop:grid-cols-4">
                     <MetricCard
                       title="Total conversations"
                       value={formatNumber(summary.total_conversations)}
@@ -457,7 +470,7 @@ export default function AnalyticsPage() {
                   />
 
                   {isPerformanceOpen && (
-                    <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                    <div className="mt-4 grid gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
                       <MetricCard
                         title="Response latency"
                         value={formatDuration(
@@ -527,7 +540,7 @@ export default function AnalyticsPage() {
                     description="Failures and interrupted streaming requests."
                   />
 
-                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <div className="mt-4 grid gap-4 tablet:grid-cols-2">
                     <MetricCard
                       title="Recorded errors"
                       value={formatNumber(summary.error_count)}

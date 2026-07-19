@@ -2,18 +2,26 @@ import "../styles/globals.css";
 import { ThemeProvider } from "next-themes";
 import data from "../data/portfolio.json";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const App = ({ Component, pageProps }) => {
+  const router = useRouter();
+  const isAdminPage = router.pathname.startsWith("/admin");
+
   useEffect(() => {
     if (!data.showCursor) return;
 
-    // hide the native cursor everywhere (even below footer / outside root div)
+    if (isAdminPage) {
+      document.documentElement.classList.remove("cursor-none");
+      return;
+    }
+
     document.documentElement.classList.add("cursor-none");
 
     return () => {
       document.documentElement.classList.remove("cursor-none");
     };
-  }, []);
+  }, [isAdminPage]);
 
   return (
     <ThemeProvider
@@ -25,6 +33,5 @@ const App = ({ Component, pageProps }) => {
     </ThemeProvider>
   );
 };
-
 
 export default App;

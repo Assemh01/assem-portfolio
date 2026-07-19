@@ -1,7 +1,7 @@
 from typing import Any
 
 from sqlalchemy.orm import Session
-
+import traceback
 from app.core.logger import logger
 from app.db.models import (
     ChatRequest,
@@ -13,12 +13,6 @@ from app.db.models import (
 def log_chat_request(db: Session, **kwargs: Any) -> None:
     db.add(ChatRequest(**kwargs))
     db.commit()
-
-
-def log_retrieval(db: Session, **kwargs: Any) -> None:
-    db.add(RetrievalLog(**kwargs))
-    db.commit()
-
 
 def log_frontend_metric(
     db: Session,

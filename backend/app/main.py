@@ -25,6 +25,8 @@ from app.schemas import (
     ChatResponse,
     FrontendAnalyticsEvent,
 )
+from app.routers.admin import router as admin_router
+
 
 init_db()
 
@@ -37,6 +39,7 @@ app = FastAPI(
     redoc_url=None,
     openapi_url=None,
 )
+app.include_router(admin_router)
 
 ALLOWED_FRONTEND_EVENTS = {
     "homepage_loaded",

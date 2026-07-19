@@ -38,6 +38,7 @@ class ChatRequest(Base):
     timestamp = Column(
         DateTime(timezone=True),
         server_default=func.now(),
+        index=True,
     )
 
     user_query = Column(Text, nullable=False)
@@ -59,7 +60,7 @@ class ChatRequest(Base):
     generation_latency_ms = Column(Float, nullable=True)
     backend_ttft_ms = Column(Float, nullable=True)
 
-    status = Column(String(50), default="success")
+    status = Column(String(50), default="success", index=True)
     stream_cancelled = Column(Boolean, default=False)
     error_message = Column(Text, nullable=True)
 
@@ -96,6 +97,7 @@ class RetrievalLog(Base):
     timestamp = Column(
         DateTime(timezone=True),
         server_default=func.now(),
+        index=True,
     )
 
 
@@ -115,7 +117,7 @@ class FrontendMetric(Base):
     device_type = Column(String(50), nullable=True)
     metadata_json = Column(JSON, nullable=True)
 
-    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    timestamp = Column(DateTime(timezone=True), server_default=func.now(), index=True)
 
 
 class ErrorLog(Base):
@@ -129,4 +131,4 @@ class ErrorLog(Base):
     traceback = Column(Text, nullable=True)
     endpoint = Column(String(200), nullable=True)
 
-    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    timestamp = Column(DateTime(timezone=True), server_default=func.now(), index=True)

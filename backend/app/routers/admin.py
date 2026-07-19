@@ -1,10 +1,10 @@
-from datetime import datetime, time, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from math import ceil
 from typing import Literal
 from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import asc, desc, distinct, func, or_
+from sqlalchemy import asc, desc, distinct, func, or_, case
 from sqlalchemy.orm import Session
 
 from app.core.admin_auth import require_admin
@@ -15,7 +15,6 @@ from app.db.models import (
     RetrievalLog,
 )
 from app.db.session import get_db
-
 
 router = APIRouter(
     prefix="/admin/api",
@@ -36,6 +35,60 @@ ConversationSortField = Literal[
 ]
 
 SortDirection = Literal["asc", "desc"]
+
+AnalyticsRange = Literal["7d", "30d", "90d", "all"]
+
+RANGE_DAYS: dict[str, int] = {
+    "7d": 7,
+    "30d": 30,
+    "90d": 90,
+}
+
+
+def get_range_utc_bounds(
+    selected_range: AnalyticsRange,
+) -> tuple[datetime | None, datetime]:
+    """
+    Return UTC bounds for a Detroit-local analytics range.
+
+    The start is inclusive and the end is exclusive.
+    Seven days includes today and the previous six days.
+    """
+
+    today_detroit = datetime.now(DETROIT_TIMEZONE).date()
+
+    tomorrow_start_detroit = datetime.combine(
+        today_detroit + timedelta(days=1),
+        time.min,
+        tzinfo=DETROIT_TIMEZONE,
+    )
+
+    end_utc = tomorrow_start_detroit.astimezone(timezone.utc)
+
+    if selected_range == "all":
+        return None, end_utc
+
+    start_date = today_detroit - timedelta(
+        days=RANGE_DAYS[selected_range] - 1
+    )
+
+    start_detroit = datetime.combine(
+        start_date,
+        time.min,
+        tzinfo=DETROIT_TIMEZONE,
+    )
+
+    return start_detroit.astimezone(timezone.utc), end_utc
+
+
+def detroit_date_bucket(column):
+    """
+    Convert a PostgreSQL timezone-aware timestamp into a Detroit-local date.
+    """
+
+    return func.date(
+        func.timezone("America/Detroit", column)
+    )
 
 
 def rounded_average(value: float | None) -> float | None:
@@ -188,6 +241,287 @@ def get_admin_summary(
         "cancelled_streams": cancelled_streams,
     }
 
+@router.get("/trends")
+def get_admin_trends(
+    range: AnalyticsRange = Query(default="30d"),
+    db: Session = Depends(get_db),
+) -> dict:
+    start_utc, end_utc = get_range_utc_bounds(range)
+
+    # Main chat-request aggregates.
+    chat_date = detroit_date_bucket(
+        ChatRequest.timestamp
+    ).label("date")
+
+    chat_query = db.query(
+        chat_date,
+        func.count(ChatRequest.id).label("chats"),
+        func.count(
+            distinct(ChatRequest.conversation_id)
+        ).label("conversations"),
+        func.avg(
+            ChatRequest.total_latency_ms
+        ).label("average_total_latency_ms"),
+        func.avg(
+            ChatRequest.retrieval_latency_ms
+        ).label("average_retrieval_latency_ms"),
+        func.avg(
+            ChatRequest.generation_latency_ms
+        ).label("average_generation_latency_ms"),
+        func.avg(
+            ChatRequest.backend_ttft_ms
+        ).label("average_backend_ttft_ms"),
+        func.sum(
+            case(
+                (ChatRequest.status == "success", 1),
+                else_=0,
+            )
+        ).label("successes"),
+        func.sum(
+            case(
+                (ChatRequest.stream_cancelled.is_(True), 1),
+                else_=0,
+            )
+        ).label("cancelled_streams"),
+    ).filter(
+        ChatRequest.timestamp < end_utc
+    )
+
+    if start_utc is not None:
+        chat_query = chat_query.filter(
+            ChatRequest.timestamp >= start_utc
+        )
+
+    chat_rows = (
+        chat_query
+        .group_by(chat_date)
+        .order_by(chat_date)
+        .all()
+    )
+
+    # Rerank timing is stored separately in retrieval_logs.
+    # Group it by the original request date so all measurements line up.
+    rerank_date = detroit_date_bucket(
+        ChatRequest.timestamp
+    ).label("date")
+
+    rerank_query = (
+        db.query(
+            rerank_date,
+            func.avg(
+                RetrievalLog.rerank_duration_ms
+            ).label("average_rerank_latency_ms"),
+        )
+        .join(
+            RetrievalLog,
+            RetrievalLog.request_id == ChatRequest.request_id,
+        )
+        .filter(
+            ChatRequest.timestamp < end_utc,
+            RetrievalLog.rerank_duration_ms.isnot(None),
+        )
+    )
+
+    if start_utc is not None:
+        rerank_query = rerank_query.filter(
+            ChatRequest.timestamp >= start_utc
+        )
+
+    rerank_rows = (
+        rerank_query
+        .group_by(rerank_date)
+        .order_by(rerank_date)
+        .all()
+    )
+
+    # Reduce frontend metrics to one TTFT value per request before
+    # calculating the daily average. This prevents duplicate events from
+    # giving one request extra weight.
+    frontend_ttft_per_request = (
+        db.query(
+            FrontendMetric.request_id.label("request_id"),
+            func.avg(
+                FrontendMetric.time_to_first_token_ms
+            ).label("frontend_ttft_ms"),
+        )
+        .filter(
+            FrontendMetric.request_id.isnot(None),
+            FrontendMetric.event_name == "first_token_received",
+            FrontendMetric.time_to_first_token_ms.isnot(None),
+        )
+        .group_by(FrontendMetric.request_id)
+        .subquery()
+    )
+
+    frontend_date = detroit_date_bucket(
+        ChatRequest.timestamp
+    ).label("date")
+
+    frontend_query = (
+        db.query(
+            frontend_date,
+            func.avg(
+                frontend_ttft_per_request.c.frontend_ttft_ms
+            ).label("average_frontend_ttft_ms"),
+        )
+        .join(
+            frontend_ttft_per_request,
+            frontend_ttft_per_request.c.request_id
+            == ChatRequest.request_id,
+        )
+        .filter(ChatRequest.timestamp < end_utc)
+    )
+
+    if start_utc is not None:
+        frontend_query = frontend_query.filter(
+            ChatRequest.timestamp >= start_utc
+        )
+
+    frontend_rows = (
+        frontend_query
+        .group_by(frontend_date)
+        .order_by(frontend_date)
+        .all()
+    )
+
+    # Error logs have their own timestamps and can exist independently
+    # from a successfully recorded chat request.
+    error_date = detroit_date_bucket(
+        ErrorLog.timestamp
+    ).label("date")
+
+    error_query = (
+        db.query(
+            error_date,
+            func.count(ErrorLog.id).label("errors"),
+        )
+        .filter(ErrorLog.timestamp < end_utc)
+    )
+
+    if start_utc is not None:
+        error_query = error_query.filter(
+            ErrorLog.timestamp >= start_utc
+        )
+
+    error_rows = (
+        error_query
+        .group_by(error_date)
+        .order_by(error_date)
+        .all()
+    )
+
+    chat_by_date = {
+        row.date: {
+            "chats": int(row.chats or 0),
+            "conversations": int(row.conversations or 0),
+            "average_total_latency_ms": rounded_average(
+                row.average_total_latency_ms
+            ),
+            "average_retrieval_latency_ms": rounded_average(
+                row.average_retrieval_latency_ms
+            ),
+            "average_generation_latency_ms": rounded_average(
+                row.average_generation_latency_ms
+            ),
+            "average_backend_ttft_ms": rounded_average(
+                row.average_backend_ttft_ms
+            ),
+            "successes": int(row.successes or 0),
+            "cancelled_streams": int(
+                row.cancelled_streams or 0
+            ),
+        }
+        for row in chat_rows
+    }
+
+    rerank_by_date = {
+        row.date: rounded_average(
+            row.average_rerank_latency_ms
+        )
+        for row in rerank_rows
+    }
+
+    frontend_by_date = {
+        row.date: rounded_average(
+            row.average_frontend_ttft_ms
+        )
+        for row in frontend_rows
+    }
+
+    errors_by_date = {
+        row.date: int(row.errors or 0)
+        for row in error_rows
+    }
+
+    recorded_dates = (
+        set(chat_by_date)
+        | set(rerank_by_date)
+        | set(frontend_by_date)
+        | set(errors_by_date)
+    )
+
+    if not recorded_dates:
+        return {
+            "range": range,
+            "items": [],
+        }
+
+    today_detroit = datetime.now(DETROIT_TIMEZONE).date()
+
+    if range == "all":
+        first_date = min(recorded_dates)
+    else:
+        first_date = today_detroit - timedelta(
+            days=RANGE_DAYS[range] - 1
+        )
+
+    items = []
+    current_date: date = first_date
+
+    while current_date <= today_detroit:
+        chat_metrics = chat_by_date.get(current_date, {})
+
+        items.append(
+            {
+                "date": current_date.isoformat(),
+                "chats": chat_metrics.get("chats", 0),
+                "conversations": chat_metrics.get(
+                    "conversations",
+                    0,
+                ),
+                "average_total_latency_ms": chat_metrics.get(
+                    "average_total_latency_ms"
+                ),
+                "average_retrieval_latency_ms": chat_metrics.get(
+                    "average_retrieval_latency_ms"
+                ),
+                "average_rerank_latency_ms": rerank_by_date.get(
+                    current_date
+                ),
+                "average_generation_latency_ms": chat_metrics.get(
+                    "average_generation_latency_ms"
+                ),
+                "average_backend_ttft_ms": chat_metrics.get(
+                    "average_backend_ttft_ms"
+                ),
+                "average_frontend_ttft_ms": frontend_by_date.get(
+                    current_date
+                ),
+                "successes": chat_metrics.get("successes", 0),
+                "errors": errors_by_date.get(current_date, 0),
+                "cancelled_streams": chat_metrics.get(
+                    "cancelled_streams",
+                    0,
+                ),
+            }
+        )
+
+        current_date += timedelta(days=1)
+
+    return {
+        "range": range,
+        "items": items,
+    }
 
 @router.get("/conversations")
 def get_admin_conversations(

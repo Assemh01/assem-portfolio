@@ -98,7 +98,7 @@ export default function ConversationsPage() {
                   </a>
                 </Link>
 
-                <Link href="/admin/trends?range=30d">
+                <Link href="/admin/trends?range=7d">
                   <a className="rounded-lg px-4 py-2 text-sm text-slate-400 transition hover:bg-white/5 hover:text-white">
                     Trends
                   </a>

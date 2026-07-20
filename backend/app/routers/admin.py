@@ -36,6 +36,17 @@ ConversationSortField = Literal[
 
 SortDirection = Literal["asc", "desc"]
 
+ConversationStatusFilter = Literal[
+    "success",
+    "failed",
+    "cancelled",
+]
+
+ConversationStreamingFilter = Literal[
+    "streaming",
+    "non_streaming",
+]
+
 AnalyticsRange = Literal["7d", "30d", "90d", "all"]
 
 RANGE_DAYS: dict[str, int] = {
@@ -243,7 +254,7 @@ def get_admin_summary(
 
 @router.get("/trends")
 def get_admin_trends(
-    range: AnalyticsRange = Query(default="30d"),
+    range: AnalyticsRange = Query(default="7d"),
     db: Session = Depends(get_db),
 ) -> dict:
     start_utc, end_utc = get_range_utc_bounds(range)
@@ -528,6 +539,30 @@ def get_admin_conversations(
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=25, ge=1, le=100),
     search: str | None = Query(default=None, max_length=300),
+    status: ConversationStatusFilter | None = Query(
+        default=None
+    ),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    visitor_id: str | None = Query(
+        default=None,
+        max_length=100,
+    ),
+    conversation_id: str | None = Query(
+        default=None,
+        max_length=100,
+    ),
+    device: str | None = Query(
+        default=None,
+        max_length=100,
+    ),
+    browser: str | None = Query(
+        default=None,
+        max_length=100,
+    ),
+    streaming: ConversationStreamingFilter | None = Query(
+        default=None
+    ),
     sort_by: ConversationSortField = Query(
         default="timestamp"
     ),
@@ -535,6 +570,95 @@ def get_admin_conversations(
     db: Session = Depends(get_db),
 ) -> dict:
     query = db.query(ChatRequest)
+    if date_from and date_to and date_from > date_to:
+        raise HTTPException(
+            status_code=422,
+            detail="date_from cannot be later than date_to.",
+        )
+
+    if status == "success":
+        query = query.filter(
+            ChatRequest.status == "success",
+            or_(
+                ChatRequest.stream_cancelled.is_(False),
+                ChatRequest.stream_cancelled.is_(None),
+            ),
+        )
+
+    elif status == "failed":
+        query = query.filter(
+            ChatRequest.status.isnot(None),
+            ChatRequest.status != "success",
+            or_(
+                ChatRequest.stream_cancelled.is_(False),
+                ChatRequest.stream_cancelled.is_(None),
+            ),
+        )
+
+    elif status == "cancelled":
+        query = query.filter(
+            ChatRequest.stream_cancelled.is_(True)
+        )
+
+    if date_from:
+        start_detroit = datetime.combine(
+            date_from,
+            time.min,
+            tzinfo=DETROIT_TIMEZONE,
+        )
+
+        query = query.filter(
+            ChatRequest.timestamp
+            >= start_detroit.astimezone(timezone.utc)
+        )
+
+    if date_to:
+        end_detroit = datetime.combine(
+            date_to + timedelta(days=1),
+            time.min,
+            tzinfo=DETROIT_TIMEZONE,
+        )
+
+        query = query.filter(
+            ChatRequest.timestamp
+            < end_detroit.astimezone(timezone.utc)
+        )
+
+    if visitor_id and visitor_id.strip():
+        query = query.filter(
+            ChatRequest.visitor_id == visitor_id.strip()
+        )
+
+    if conversation_id and conversation_id.strip():
+        query = query.filter(
+            ChatRequest.conversation_id
+            == conversation_id.strip()
+        )
+
+    if device and device.strip():
+        query = query.filter(
+            func.lower(ChatRequest.device_type)
+            == device.strip().lower()
+        )
+
+    if browser and browser.strip():
+        query = query.filter(
+            func.lower(ChatRequest.browser)
+            == browser.strip().lower()
+        )
+
+    if streaming == "streaming":
+        query = query.filter(
+            ChatRequest.streaming_enabled.is_(True)
+        )
+
+    elif streaming == "non_streaming":
+        query = query.filter(
+            or_(
+                ChatRequest.streaming_enabled.is_(False),
+                ChatRequest.streaming_enabled.is_(None),
+            )
+        )
 
     if search and search.strip():
         search_term = f"%{search.strip()}%"
@@ -628,6 +752,24 @@ def get_admin_conversations(
             "sort_direction": sort_direction,
         },
         "search": search,
+        "filters": {
+            "status": status,
+            "date_from": (
+                date_from.isoformat()
+                if date_from
+                else None
+            ),
+            "date_to": (
+                date_to.isoformat()
+                if date_to
+                else None
+            ),
+            "visitor_id": visitor_id,
+            "conversation_id": conversation_id,
+            "device": device,
+            "browser": browser,
+            "streaming": streaming,
+        },
     }
 
 

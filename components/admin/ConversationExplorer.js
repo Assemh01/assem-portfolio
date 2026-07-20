@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -42,6 +42,241 @@ const SORT_OPTIONS = [
     label: "Response length",
   },
 ];
+
+const EMPTY_FILTERS = {
+  status: "",
+  date_from: "",
+  date_to: "",
+  visitor_id: "",
+  conversation_id: "",
+  device: "",
+  browser: "",
+  streaming: "",
+};
+
+const FILTER_LABELS = {
+  status: "Status",
+  date_from: "From",
+  date_to: "To",
+  visitor_id: "Visitor",
+  conversation_id: "Conversation",
+  device: "Device",
+  browser: "Browser",
+  streaming: "Request type",
+};
+
+const FILTER_VALUE_LABELS = {
+  success: "Success",
+  failed: "Failed",
+  cancelled: "Cancelled",
+  streaming: "Streaming",
+  non_streaming: "Non-streaming",
+};
+
+const VALID_SORT_FIELDS = new Set(
+  SORT_OPTIONS.map((option) => option.value)
+);
+
+const VALID_SORT_DIRECTIONS = new Set([
+  "asc",
+  "desc",
+]);
+
+const VALID_STATUSES = new Set([
+  "success",
+  "failed",
+  "cancelled",
+]);
+
+const VALID_STREAMING_FILTERS = new Set([
+  "streaming",
+  "non_streaming",
+]);
+
+const ALLOWED_PAGE_SIZES = new Set([
+  10,
+  25,
+  50,
+  100,
+]);
+
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+function getSingleQueryValue(value) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function getCleanQueryString(value, maximumLength = 300) {
+  const queryValue = getSingleQueryValue(value);
+
+  if (typeof queryValue !== "string") {
+    return "";
+  }
+
+  return queryValue.trim().slice(0, maximumLength);
+}
+
+function getPositiveQueryInteger(value, fallback) {
+  const parsedValue = Number.parseInt(
+    getSingleQueryValue(value),
+    10
+  );
+
+  if (!Number.isFinite(parsedValue) || parsedValue < 1) {
+    return fallback;
+  }
+
+  return parsedValue;
+}
+
+function readExplorerUrlState(query) {
+  const requestedPageSize = getPositiveQueryInteger(
+    query.page_size,
+    25
+  );
+
+  const requestedSortBy = getCleanQueryString(
+    query.sort_by,
+    50
+  );
+
+  const requestedSortDirection = getCleanQueryString(
+    query.sort_direction,
+    10
+  );
+
+  const requestedStatus = getCleanQueryString(
+    query.status,
+    20
+  );
+
+  const requestedStreaming = getCleanQueryString(
+    query.streaming,
+    30
+  );
+
+  const requestedDateFrom = getCleanQueryString(
+    query.date_from,
+    10
+  );
+
+  const requestedDateTo = getCleanQueryString(
+    query.date_to,
+    10
+  );
+
+  return {
+    page: getPositiveQueryInteger(query.page, 1),
+
+    pageSize: ALLOWED_PAGE_SIZES.has(requestedPageSize)
+      ? requestedPageSize
+      : 25,
+
+    search: getCleanQueryString(query.search, 300),
+
+    sortBy: VALID_SORT_FIELDS.has(requestedSortBy)
+      ? requestedSortBy
+      : "timestamp",
+
+    sortDirection: VALID_SORT_DIRECTIONS.has(
+      requestedSortDirection
+    )
+      ? requestedSortDirection
+      : "desc",
+
+    filters: {
+      status: VALID_STATUSES.has(requestedStatus)
+        ? requestedStatus
+        : "",
+
+      date_from: DATE_PATTERN.test(requestedDateFrom)
+        ? requestedDateFrom
+        : "",
+
+      date_to: DATE_PATTERN.test(requestedDateTo)
+        ? requestedDateTo
+        : "",
+
+      visitor_id: getCleanQueryString(
+        query.visitor_id,
+        100
+      ),
+
+      conversation_id: getCleanQueryString(
+        query.conversation_id,
+        100
+      ),
+
+      device: getCleanQueryString(query.device, 100),
+      browser: getCleanQueryString(query.browser, 100),
+
+      streaming: VALID_STREAMING_FILTERS.has(
+        requestedStreaming
+      )
+        ? requestedStreaming
+        : "",
+    },
+  };
+}
+
+function buildExplorerPath(pathname, explorerState) {
+  const queryParameters = new URLSearchParams();
+
+  if (explorerState.page > 1) {
+    queryParameters.set(
+      "page",
+      String(explorerState.page)
+    );
+  }
+
+  if (explorerState.pageSize !== 25) {
+    queryParameters.set(
+      "page_size",
+      String(explorerState.pageSize)
+    );
+  }
+
+  if (explorerState.search) {
+    queryParameters.set(
+      "search",
+      explorerState.search
+    );
+  }
+
+  if (explorerState.sortBy !== "timestamp") {
+    queryParameters.set(
+      "sort_by",
+      explorerState.sortBy
+    );
+  }
+
+  if (explorerState.sortDirection !== "desc") {
+    queryParameters.set(
+      "sort_direction",
+      explorerState.sortDirection
+    );
+  }
+
+  Object.entries(explorerState.filters).forEach(
+    ([key, value]) => {
+      if (value) {
+        queryParameters.set(key, value);
+      }
+    }
+  );
+
+  const queryString = queryParameters.toString();
+
+  return queryString
+    ? `${pathname}?${queryString}`
+    : pathname;
+}
+
+function areFiltersEqual(firstFilters, secondFilters) {
+  return Object.keys(EMPTY_FILTERS).every(
+    (key) => firstFilters[key] === secondFilters[key]
+  );
+}
 
 function formatTimestamp(value) {
   if (!value) {
@@ -448,22 +683,108 @@ export default function ConversationExplorer() {
   const [sortBy, setSortBy] = useState("timestamp");
   const [sortDirection, setSortDirection] = useState("desc");
 
+  const [filters, setFilters] = useState({
+    ...EMPTY_FILTERS,
+  });
+  const [filterDraft, setFilterDraft] = useState({
+    ...EMPTY_FILTERS,
+  });
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
   const [refreshVersion, setRefreshVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
   const [selectedRequestId, setSelectedRequestId] = useState(null);
-    
+
+  const [isUrlStateReady, setIsUrlStateReady] =
+    useState(false);
+
+  const isApplyingUrlStateRef = useRef(false);
+
   useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+
+    const urlState = readExplorerUrlState(
+      router.query
+    );
+
+    isApplyingUrlStateRef.current = true;
+
+    setPage(urlState.page);
+    setPageSize(urlState.pageSize);
+
+    setSearchInput(urlState.search);
+    setSearch(urlState.search);
+
+    setSortBy(urlState.sortBy);
+    setSortDirection(urlState.sortDirection);
+
+    setFilters((currentFilters) =>
+      areFiltersEqual(currentFilters, urlState.filters)
+        ? currentFilters
+        : {
+            ...urlState.filters,
+          }
+    );
+
+    setFilterDraft((currentFilters) =>
+      areFiltersEqual(currentFilters, urlState.filters)
+        ? currentFilters
+        : {
+            ...urlState.filters,
+          }
+    );
+
+    setIsFiltersOpen(
+      Object.values(urlState.filters).some(Boolean)
+    );
+
+    setIsUrlStateReady(true);
+
+    const canonicalPath = buildExplorerPath(
+      router.pathname,
+      urlState
+    );
+
+    if (router.asPath !== canonicalPath) {
+      void router.replace(
+        canonicalPath,
+        undefined,
+        {
+          shallow: true,
+          scroll: false,
+        }
+      );
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (!isUrlStateReady) {
+      return;
+    }
+
+    const normalizedSearch = searchInput.trim();
+
+    if (normalizedSearch === search) {
+      return;
+    }
+
     const timeoutId = window.setTimeout(() => {
       setPage(1);
-      setSearch(searchInput.trim());
+      setSearch(normalizedSearch);
     }, 350);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [searchInput]);
+  }, [
+    isUrlStateReady,
+    search,
+    searchInput,
+  ]);
 
   const loadConversations = useCallback(
     async (signal) => {
@@ -480,6 +801,12 @@ export default function ConversationExplorer() {
       if (search) {
         queryParameters.set("search", search);
       }
+
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) {
+          queryParameters.set(key, value);
+        }
+      });
 
       try {
         const response = await fetch(
@@ -545,10 +872,22 @@ export default function ConversationExplorer() {
         }
       }
     },
-    [page, pageSize, router, search, sortBy, sortDirection]
+    [
+      filters,
+      page,
+      pageSize,
+      router,
+      search,
+      sortBy,
+      sortDirection,
+    ]
   );
 
   useEffect(() => {
+    if (!isUrlStateReady) {
+      return;
+    }
+
     const controller = new AbortController();
 
     void loadConversations(controller.signal);
@@ -556,7 +895,56 @@ export default function ConversationExplorer() {
     return () => {
       controller.abort();
     };
-  }, [loadConversations, refreshVersion]);
+  }, [
+    isUrlStateReady,
+    loadConversations,
+    refreshVersion,
+  ]);
+
+  useEffect(() => {
+    if (!router.isReady || !isUrlStateReady) {
+      return;
+    }
+
+    if (isApplyingUrlStateRef.current) {
+      isApplyingUrlStateRef.current = false;
+      return;
+    }
+
+    const nextPath = buildExplorerPath(
+      router.pathname,
+      {
+        page,
+        pageSize,
+        search,
+        sortBy,
+        sortDirection,
+        filters,
+      }
+    );
+
+    if (nextPath === router.asPath) {
+      return;
+    }
+
+    void router.replace(
+      nextPath,
+      undefined,
+      {
+        shallow: true,
+        scroll: false,
+      }
+    );
+  }, [
+    filters,
+    isUrlStateReady,
+    page,
+    pageSize,
+    router,
+    search,
+    sortBy,
+    sortDirection,
+  ]);
 
   const visibleRange = useMemo(() => {
     if (!pagination.total_items) {
@@ -600,6 +988,78 @@ export default function ConversationExplorer() {
     setSearch("");
     setPage(1);
   }
+  const activeFilters = useMemo(
+  () =>
+    Object.entries(filters)
+      .filter(([, value]) => Boolean(value))
+      .map(([key, value]) => ({
+        key,
+        label: FILTER_LABELS[key] || key,
+        value: FILTER_VALUE_LABELS[value] || value,
+      })),
+  [filters]
+);
+
+const hasActiveFilters = activeFilters.length > 0;
+
+function updateFilterDraft(key, value) {
+  setFilterDraft((currentFilters) => ({
+    ...currentFilters,
+    [key]: value,
+  }));
+}
+
+function applyFilters(event) {
+  event.preventDefault();
+
+  const normalizedFilters = Object.fromEntries(
+    Object.entries(filterDraft).map(([key, value]) => [
+      key,
+      typeof value === "string" ? value.trim() : value,
+    ])
+  );
+
+  if (
+    normalizedFilters.date_from &&
+    normalizedFilters.date_to &&
+    normalizedFilters.date_from > normalizedFilters.date_to
+  ) {
+    setError("The start date cannot be later than the end date.");
+    return;
+  }
+
+  setError("");
+  setFilters(normalizedFilters);
+  setPage(1);
+}
+
+function removeFilter(filterKey) {
+  setFilters((currentFilters) => ({
+    ...currentFilters,
+    [filterKey]: "",
+  }));
+
+  setFilterDraft((currentFilters) => ({
+    ...currentFilters,
+    [filterKey]: "",
+  }));
+
+  setPage(1);
+}
+
+function clearFilters() {
+  setFilters({
+    ...EMPTY_FILTERS,
+  });
+
+  setFilterDraft({
+    ...EMPTY_FILTERS,
+  });
+
+  setPage(1);
+}
+  const hasSearchOrFilters =
+    Boolean(search) || hasActiveFilters;
 
   return (
   <>
@@ -622,7 +1082,7 @@ export default function ConversationExplorer() {
       </div>
 
       <div className="mt-4 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50">
-        <div className="grid gap-3 border-b border-white/10 p-4 laptop:grid-cols-[minmax(260px,1fr)_190px_auto_auto]">
+        <div className="grid gap-3 border-b border-white/10 p-4 laptop:grid-cols-[minmax(260px,1fr)_190px_auto_auto_auto]">
           <div className="relative">
             <Search
               size={17}
@@ -679,6 +1139,26 @@ export default function ConversationExplorer() {
           <button
             type="button"
             onClick={() =>
+              setIsFiltersOpen((currentValue) => !currentValue)
+            }
+            aria-expanded={isFiltersOpen}
+            className={[
+              "inline-flex h-11 items-center justify-center rounded-xl border px-4",
+              "text-sm font-medium transition",
+              hasActiveFilters
+                ? "border-purple-400/30 bg-purple-500/10 text-purple-200"
+                : "border-white/10 bg-slate-950 text-slate-300 hover:border-purple-400/40 hover:text-white",
+            ].join(" ")}
+          >
+            Filters
+            {hasActiveFilters
+              ? ` (${activeFilters.length})`
+              : ""}
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
               setRefreshVersion((currentValue) => currentValue + 1)
             }
             disabled={isLoading}
@@ -692,7 +1172,216 @@ export default function ConversationExplorer() {
             Refresh
           </button>
         </div>
+        {isFiltersOpen && (
+  <form
+    onSubmit={applyFilters}
+    className="border-b border-white/10 bg-slate-950/35 p-4"
+  >
+    <div className="grid gap-4 tablet:grid-cols-2 laptop:grid-cols-4">
+      <label className="block">
+        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          Status
+        </span>
 
+        <select
+          value={filterDraft.status}
+          onChange={(event) =>
+            updateFilterDraft("status", event.target.value)
+          }
+          className="h-11 w-full rounded-xl border border-white/[0.12] !bg-[#0b1220] px-3 text-sm text-slate-200 outline-none focus:border-purple-400/50"
+        >
+          <option value="">All statuses</option>
+          <option value="success">Success</option>
+          <option value="failed">Failed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </label>
+
+      <label className="block">
+        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          Request type
+        </span>
+
+        <select
+          value={filterDraft.streaming}
+          onChange={(event) =>
+            updateFilterDraft(
+              "streaming",
+              event.target.value
+            )
+          }
+          className="h-11 w-full rounded-xl border border-white/10 !bg-[#0b1220] px-3 text-sm text-slate-300 outline-none focus:border-purple-400/50"
+        >
+          <option value="">All request types</option>
+          <option value="streaming">Streaming</option>
+          <option value="non_streaming">
+            Non-streaming
+          </option>
+        </select>
+      </label>
+
+      <label className="block">
+        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          Date from
+        </span>
+
+        <input
+          type="date"
+          value={filterDraft.date_from}
+          onChange={(event) =>
+            updateFilterDraft(
+              "date_from",
+              event.target.value
+            )
+          }
+          className="h-11 w-full rounded-xl border border-white/10 !bg-[#0b1220] px-3 text-sm text-slate-300 outline-none focus:border-purple-400/50"
+        />
+      </label>
+
+      <label className="block">
+        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          Date to
+        </span>
+
+        <input
+          type="date"
+          value={filterDraft.date_to}
+          onChange={(event) =>
+            updateFilterDraft(
+              "date_to",
+              event.target.value
+            )
+          }
+          className="h-11 w-full rounded-xl border border-white/10 !bg-[#0b1220] px-3 text-sm text-slate-300 outline-none focus:border-purple-400/50"
+        />
+      </label>
+
+      <label className="block">
+        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          Device
+        </span>
+
+        <input
+          type="text"
+          value={filterDraft.device}
+          onChange={(event) =>
+            updateFilterDraft("device", event.target.value)
+          }
+          placeholder="Desktop, Mobile…"
+          className="h-11 w-full rounded-xl border border-white/[0.12] !bg-[#0b1220] px-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-purple-400/50"
+        />
+      </label>
+
+      <label className="block">
+        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          Browser
+        </span>
+
+        <input
+          type="text"
+          value={filterDraft.browser}
+          onChange={(event) =>
+            updateFilterDraft(
+              "browser",
+              event.target.value
+            )
+          }
+          placeholder="Chrome, Safari…"
+          className="h-11 w-full rounded-xl border border-white/10 !bg-[#0b1220] px-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-purple-400/50"
+        />
+      </label>
+
+      <label className="block">
+        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          Visitor ID
+        </span>
+
+        <input
+          type="text"
+          value={filterDraft.visitor_id}
+          onChange={(event) =>
+            updateFilterDraft(
+              "visitor_id",
+              event.target.value
+            )
+          }
+          placeholder="Exact visitor ID"
+          className="h-11 w-full rounded-xl border border-white/[0.12] !bg-[#0b1220] px-3 font-mono text-sm text-white outline-none placeholder:font-sans placeholder:text-slate-500 focus:border-purple-400/50"
+        />
+      </label>
+
+      <label className="block">
+        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          Conversation ID
+        </span>
+
+        <input
+          type="text"
+          value={filterDraft.conversation_id}
+          onChange={(event) =>
+            updateFilterDraft(
+              "conversation_id",
+              event.target.value
+            )
+          }
+          placeholder="Exact conversation ID"
+          className="h-11 w-full rounded-xl border border-white/[0.12] !bg-[#0b1220] px-3 font-mono text-sm text-white outline-none placeholder:font-sans placeholder:text-slate-500 focus:border-purple-400/50"
+        />
+      </label>
+    </div>
+
+            <div className="mt-5 flex flex-wrap items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={clearFilters}
+                disabled={
+                  !hasActiveFilters &&
+                  !Object.values(filterDraft).some(Boolean)
+                }
+                className="h-10 rounded-xl border border-white/10 bg-slate-950 px-4 text-sm text-slate-400 transition hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Clear filters
+              </button>
+
+              <button
+                type="submit"
+                className="h-10 rounded-xl bg-purple-500 px-5 text-sm font-medium text-white transition hover:bg-purple-400"
+              >
+                Apply filters
+              </button>
+            </div>
+          </form>
+        )}
+        {hasActiveFilters && (
+        <div className="flex flex-wrap gap-2 border-b border-white/10 px-4 py-3">
+          {activeFilters.map((activeFilter) => (
+            <button
+              key={activeFilter.key}
+              type="button"
+              onClick={() =>
+                removeFilter(activeFilter.key)
+              }
+              className="inline-flex items-center gap-2 rounded-full border border-purple-400/20 bg-purple-500/10 px-3 py-1.5 text-xs text-purple-200 transition hover:border-purple-400/40 hover:bg-purple-500/15"
+            >
+              <span className="text-purple-300/70">
+                {activeFilter.label}:
+              </span>
+
+              <span>{activeFilter.value}</span>
+
+              <X size={13} />
+            </button>
+          ))}
+
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="px-2 text-xs text-slate-500 transition hover:text-white"
+          >
+            Clear all
+          </button>
+        </div>
+)}
         {error && (
           <div className="flex items-start gap-3 border-b border-red-400/20 bg-red-500/10 p-4">
             <TriangleAlert
@@ -717,14 +1406,14 @@ export default function ConversationExplorer() {
         ) : error ? null : conversations.length === 0 ? (
           <div className="px-6 py-16 text-center">
             <p className="text-sm font-medium text-slate-300">
-              {search
-                ? "No conversations match your search."
+              {hasSearchOrFilters
+                ? "No conversations match the active search or filters."
                 : "No conversations have been recorded yet."}
             </p>
 
             <p className="mt-2 text-xs text-slate-600">
-              {search
-                ? "Try a broader question, visitor ID, or status."
+              {hasSearchOrFilters
+                ? "Remove a filter or broaden your search."
                 : "New chatbot requests will appear here."}
             </p>
           </div>

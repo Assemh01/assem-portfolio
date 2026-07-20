@@ -11,6 +11,18 @@ const ALLOWED_SORT_FIELDS = new Set([
 ]);
 
 const ALLOWED_SORT_DIRECTIONS = new Set(["asc", "desc"]);
+const ALLOWED_STATUSES = new Set([
+  "success",
+  "failed",
+  "cancelled",
+]);
+
+const ALLOWED_STREAMING_FILTERS = new Set([
+  "streaming",
+  "non_streaming",
+]);
+
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 function getSingleQueryValue(value) {
   return Array.isArray(value) ? value[0] : value;
@@ -24,6 +36,16 @@ function getPositiveInteger(value, fallback, maximum) {
   }
 
   return Math.min(parsedValue, maximum);
+}
+
+function getCleanString(value, maximumLength = 100) {
+  const requestedValue = getSingleQueryValue(value);
+
+  if (typeof requestedValue !== "string") {
+    return "";
+  }
+
+  return requestedValue.trim().slice(0, maximumLength);
 }
 
 export default async function handler(req, res) {
@@ -53,11 +75,7 @@ export default async function handler(req, res) {
   const page = getPositiveInteger(req.query.page, 1, 100000);
   const pageSize = getPositiveInteger(req.query.page_size, 25, 100);
 
-  const requestedSearch = getSingleQueryValue(req.query.search);
-  const search =
-    typeof requestedSearch === "string"
-      ? requestedSearch.trim().slice(0, 300)
-      : "";
+  const search = getCleanString(req.query.search, 300);
 
   const requestedSortBy = getSingleQueryValue(req.query.sort_by);
   const sortBy = ALLOWED_SORT_FIELDS.has(requestedSortBy)
@@ -74,6 +92,57 @@ export default async function handler(req, res) {
     ? requestedSortDirection
     : "desc";
 
+  const requestedStatus = getSingleQueryValue(
+  req.query.status
+);
+
+const status = ALLOWED_STATUSES.has(requestedStatus)
+  ? requestedStatus
+  : "";
+
+const requestedStreaming = getSingleQueryValue(
+  req.query.streaming
+);
+
+const streaming = ALLOWED_STREAMING_FILTERS.has(
+  requestedStreaming
+)
+  ? requestedStreaming
+  : "";
+
+const requestedDateFrom = getSingleQueryValue(
+  req.query.date_from
+);
+
+const dateFrom =
+  typeof requestedDateFrom === "string" &&
+  DATE_PATTERN.test(requestedDateFrom)
+    ? requestedDateFrom
+    : "";
+
+const requestedDateTo = getSingleQueryValue(
+  req.query.date_to
+);
+
+const dateTo =
+  typeof requestedDateTo === "string" &&
+  DATE_PATTERN.test(requestedDateTo)
+    ? requestedDateTo
+    : "";
+
+const visitorId = getCleanString(
+  req.query.visitor_id,
+  100
+);
+
+const conversationId = getCleanString(
+  req.query.conversation_id,
+  100
+);
+
+const device = getCleanString(req.query.device, 100);
+const browser = getCleanString(req.query.browser, 100);
+
   const queryParameters = new URLSearchParams({
     page: String(page),
     page_size: String(pageSize),
@@ -84,6 +153,40 @@ export default async function handler(req, res) {
   if (search) {
     queryParameters.set("search", search);
   }
+  if (status) {
+  queryParameters.set("status", status);
+}
+
+if (dateFrom) {
+  queryParameters.set("date_from", dateFrom);
+}
+
+if (dateTo) {
+  queryParameters.set("date_to", dateTo);
+}
+
+if (visitorId) {
+  queryParameters.set("visitor_id", visitorId);
+}
+
+if (conversationId) {
+  queryParameters.set(
+    "conversation_id",
+    conversationId
+  );
+}
+
+if (device) {
+  queryParameters.set("device", device);
+}
+
+if (browser) {
+  queryParameters.set("browser", browser);
+}
+
+if (streaming) {
+  queryParameters.set("streaming", streaming);
+}
 
   try {
     const backendResponse = await fetch(

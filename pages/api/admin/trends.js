@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   const requestedRange = Array.isArray(req.query.range)
     ? req.query.range[0]
-    : req.query.range || "30d";
+    : req.query.range || "7d";
 
   if (!ALLOWED_RANGES.has(requestedRange)) {
     return res.status(400).json({

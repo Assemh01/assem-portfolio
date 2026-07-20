@@ -27,7 +27,7 @@ const ANALYTICS_RANGES = [
   },
 ];
 
-const DEFAULT_ANALYTICS_RANGE = "30d";
+const DEFAULT_ANALYTICS_RANGE = "7d";
 
 function isValidAnalyticsRange(value) {
   return ANALYTICS_RANGES.some(
@@ -309,7 +309,7 @@ export default function TrendsPage() {
                   </a>
                 </Link>
 
-                <Link href="/admin/trends?range=30d">
+                <Link href="/admin/trends?range=7d">
                   <a className="rounded-lg bg-purple-500/15 px-4 py-2 text-sm font-medium text-purple-200">
                     Trends
                   </a>
